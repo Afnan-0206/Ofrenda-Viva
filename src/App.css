@@ -335,155 +335,176 @@
   position: relative;
 }
 
-/* Welcome Banner & Quick Action Guidance */
-.welcome-banner-wrap {
+/* Reverent Altar Dedication & Sanctuary Inscription */
+.altar-dedication-wrap {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
-.welcome-banner-card {
+.altar-dedication-content {
   width: 100%;
-  max-width: 980px;
-  background: rgba(20, 24, 38, 0.85);
-  border: 1.5px solid var(--color-gold-foil);
+  max-width: 960px;
+  text-align: center;
+  padding: 1.2rem 1.8rem;
+  background: radial-gradient(ellipse at 50% 0%, rgba(42, 28, 14, 0.75) 0%, rgba(14, 11, 7, 0.88) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: 14px;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 140, 0, 0.2);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.15);
+  backdrop-filter: blur(12px);
 }
 
-.welcome-banner-text {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.welcome-icon {
-  font-size: 1.8rem;
-}
-
-.welcome-banner-text h3 {
+.altar-sacred-title {
   font-family: var(--font-serif-display);
-  font-size: 1.05rem;
-  color: #ffdf70;
-  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffd700;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 140, 0, 0.4);
 }
 
-.welcome-banner-text p {
-  font-size: 0.82rem;
-  color: var(--color-text-subtle);
-  margin: 0.2rem 0 0;
+.altar-sacred-desc {
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e2d9c8;
+  margin: 0.4rem auto 1rem;
+  max-width: 780px;
 }
 
-.welcome-quick-actions {
+.altar-reverent-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-.quick-action-pill {
+.reverent-action-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.85rem;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(212, 175, 55, 0.3);
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+  color: #f5eedc;
+  font-size: 0.82rem;
+  font-weight: 500;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
 
-.quick-action-pill:hover {
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffffff;
+.reverent-action-btn:hover {
+  background: rgba(255, 140, 0, 0.18);
   border-color: var(--color-gold-bright);
+  transform: translateY(-2px);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.25);
 }
 
-.quick-action-pill.highlight {
-  background: rgba(255, 140, 0, 0.18);
+.reverent-action-btn.active {
+  background: rgba(255, 140, 0, 0.25);
   border-color: var(--color-marigold);
   color: #ffdf70;
 }
 
-.quick-action-pill.primary {
-  background: linear-gradient(135deg, #e63946 0%, #ff8c00 100%);
+.reverent-action-btn.primary {
+  background: linear-gradient(135deg, #b91c1c 0%, #d97706 100%);
   border: 1px solid #ffd700;
   color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
 }
 
-/* Cempasúchil Arch */
-.cempasuchil-arch {
+/* Botanical Marigold Arch (Arco de Cempasúchil) */
+.botanical-arch-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto -1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.botanical-arch-svg {
+  width: 100%;
+  height: 90px;
+  overflow: visible;
+}
+
+.arch-blooms-garland {
+  position: absolute;
+  top: 15px;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: -1rem;
+  justify-content: space-between;
+  padding: 0 2rem;
 }
 
-.arch-garland-left,
-.arch-garland-right {
-  font-size: 1.3rem;
-  letter-spacing: 0.25em;
-  filter: drop-shadow(0 0 6px rgba(255, 140, 0, 0.7));
+.arch-garland-side {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
 }
 
-.arch-crest {
+.arch-center-medallion {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.8rem;
-  background: radial-gradient(circle, rgba(255, 140, 0, 0.28) 0%, rgba(18, 21, 32, 0.85) 100%);
-  border: 1px solid var(--color-gold-foil);
+  gap: 0.75rem;
+  padding: 0.5rem 1.8rem;
+  background: radial-gradient(circle, rgba(46, 30, 15, 0.95) 0%, rgba(18, 12, 6, 0.98) 100%);
+  border: 2px solid var(--color-gold-foil);
   border-radius: 999px;
-  box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 140, 0, 0.35);
 }
 
-.crest-icon {
-  color: var(--color-gold-bright);
-}
-
-.arch-title {
+.medallion-title {
   font-family: var(--font-serif-display);
-  font-size: 0.88rem;
-  letter-spacing: 0.18em;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   color: #ffdf70;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Altar Tiers (Wood Shelves) */
+/* Altar Tiers (Authentic Dark Cedar & Walnut Wood Shelves) */
 .altar-tier {
   position: relative;
-  border-radius: 12px;
-  border: 2px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  background: repeating-linear-gradient(
+    90deg,
+    #24170a 0px,
+    #2a1c0d 80px,
+    #1f1408 160px,
+    #26190c 240px
+  );
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), inset 0 2px 0 rgba(255, 215, 0, 0.15);
   transition: var(--transition-smooth);
 }
 
 .altar-tier::before {
   content: '';
   position: absolute;
-  bottom: -12px;
-  left: 2%;
-  width: 96%;
-  height: 12px;
-  background: #100b05;
-  border-radius: 0 0 6px 6px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+  bottom: -14px;
+  left: 1.5%;
+  width: 97%;
+  height: 14px;
+  background: #0f0a04;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.9);
 }
 
 /* Tier 3: Top */
 .altar-tier-3 {
-  background: linear-gradient(180deg, rgba(34, 25, 14, 0.95) 0%, rgba(18, 14, 8, 0.98) 100%);
   max-width: 780px;
   margin: 0 auto;
   width: 100%;
@@ -491,7 +512,6 @@
 
 /* Tier 2: Middle */
 .altar-tier-2 {
-  background: linear-gradient(180deg, rgba(38, 28, 16, 0.95) 0%, rgba(20, 15, 9, 0.98) 100%);
   max-width: 980px;
   margin: 0 auto;
   width: 100%;
@@ -499,7 +519,6 @@
 
 /* Tier 1: Base */
 .altar-tier-1 {
-  background: linear-gradient(180deg, rgba(42, 31, 18, 0.95) 0%, rgba(22, 16, 10, 0.98) 100%);
   width: 100%;
 }
 
@@ -508,31 +527,58 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 0.4rem 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 10px 10px 0 0;
+  padding: 0.45rem 1rem;
+  background: rgba(10, 7, 3, 0.7);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px 8px 0 0;
 }
 
 .tier-num {
   font-family: var(--font-serif-display);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--color-gold-bright);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
 .tier-name {
-  font-size: 0.82rem;
-  color: var(--color-text-subtle);
-  font-style: italic;
+  font-family: var(--font-serif-body);
+  font-size: 0.9rem;
+  color: #dfd7c5;
 }
 
 .tier-content-shelf {
-  padding: 1.5rem 1.25rem 2rem;
+  position: relative;
+  padding: 0.5rem 1.25rem 2.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
+}
+
+/* Scalloped Traditional Mexican Cream Lace Runner (Mantel de Encaje) */
+.altar-lace-runner {
+  width: 100%;
+  height: 16px;
+  background-color: #faf5eb;
+  background-image: 
+    radial-gradient(circle at 10px 0, transparent 8px, #faf5eb 8px),
+    radial-gradient(circle at 10px 8px, #dfd0bb 2px, transparent 2px);
+  background-size: 20px 20px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5));
+  opacity: 0.92;
+  margin-bottom: 0.5rem;
+}
+
+/* Carved Wood Shelf Lip */
+.altar-shelf-edge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, #3d2712 0%, #140b03 100%);
+  border-top: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 0 0 8px 8px;
 }
 
 .tier-vigil-center {
@@ -560,9 +606,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px dashed rgba(212, 175, 55, 0.2);
+  gap: 1.2rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed rgba(212, 175, 55, 0.25);
   width: 100%;
 }
 
@@ -576,7 +622,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.2rem;
   width: 100%;
 }
 
@@ -584,46 +630,55 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.8rem;
   padding: 0.5rem 0;
 }
 
 .ground-calavera-cluster {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.4rem;
+  gap: 0.75rem;
   padding: 0 0.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
 }
 
-/* Cempasúchil Pathway */
-.cempasuchil-pathway {
+/* Botanical Marigold Floor Pathway (Camino de Cempasúchil) */
+.botanical-petal-floor-path {
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.8rem 1.5rem;
-  background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.25) 0%, transparent 75%);
-  border-radius: 999px;
+  margin-top: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
-.cempasuchil-pathway:hover {
-  transform: scale(1.03);
+.botanical-petal-floor-path:hover {
+  transform: scale(1.02);
 }
 
-.pathway-petals {
-  font-size: 1.2rem;
-  letter-spacing: 0.35em;
-  filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.6));
+.floor-path-svg {
+  width: 100%;
+  max-width: 950px;
+  height: 50px;
+  overflow: visible;
 }
 
-.pathway-label {
-  font-size: 0.76rem;
+.floor-path-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: -8px;
+}
+
+.floor-path-caption {
+  font-family: var(--font-serif-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
   color: #ffdf70;
-  letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* ==========================================================================
@@ -644,46 +699,49 @@
 
 .frame-border {
   position: relative;
-  width: 230px;
-  background: linear-gradient(145deg, #2b1f13 0%, #171109 100%);
-  border: 4px solid #d4af37;
+  width: 236px;
+  background: radial-gradient(circle at 50% 30%, #3a2614 0%, #170e05 100%);
+  border: 5px solid #d4af37;
+  outline: 2px solid #5a3812;
+  outline-offset: -3px;
   border-radius: 12px;
   padding: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2);
 }
 
 .ancestor-card.is-vigil-active .frame-border {
   border-color: #ffd700;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 140, 0, 0.45);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 140, 0, 0.45);
 }
 
 .corner-filigree {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-color: #ffd700;
   border-style: solid;
   pointer-events: none;
 }
 
-.top-left { top: 3px; left: 3px; border-width: 2px 0 0 2px; }
-.top-right { top: 3px; right: 3px; border-width: 2px 2px 0 0; }
-.bottom-left { bottom: 3px; left: 3px; border-width: 0 0 2px 2px; }
-.bottom-right { bottom: 3px; right: 3px; border-width: 0 2px 2px 0; }
+.top-left { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
+.top-right { top: 4px; right: 4px; border-width: 2px 2px 0 0; }
+.bottom-left { bottom: 4px; left: 4px; border-width: 0 0 2px 2px; }
+.bottom-right { bottom: 4px; right: 4px; border-width: 0 2px 2px 0; }
 
 .frame-marigolds {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.35rem;
-  margin-top: -18px;
-  margin-bottom: 6px;
-  font-size: 1.15rem;
+  margin-top: -24px;
+  margin-bottom: 4px;
+  z-index: 10;
 }
 
-.center-flower {
-  font-size: 1.35rem;
-  filter: drop-shadow(0 0 4px rgba(255, 140, 0, 0.8));
+.frame-marigolds-botanical {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.8));
 }
 
 .photo-container {
@@ -848,29 +906,91 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.85rem;
-  background: rgba(18, 14, 10, 0.85);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  gap: 0.35rem;
+  padding: 0.6rem 0.9rem;
+  background: radial-gradient(circle at 50% 30%, rgba(36, 26, 16, 0.92) 0%, rgba(16, 12, 8, 0.96) 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 215, 0, 0.15);
 }
 
 .offering-item:hover .offering-pedestal {
   border-color: var(--color-marigold);
-  box-shadow: 0 0 15px rgba(255, 140, 0, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 18px rgba(255, 140, 0, 0.4);
 }
 
-.offering-icon-wrap {
-  font-size: 1.85rem;
-  line-height: 1;
+.offering-artwork-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.altar-art {
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+.offering-item:hover .altar-art {
+  transform: translateY(-4px) scale(1.08);
+  filter: drop-shadow(0 8px 16px rgba(255, 140, 0, 0.45));
 }
 
 .offering-name {
-  font-size: 0.75rem;
+  font-family: var(--font-serif-body);
+  font-size: 0.82rem;
   color: #ffdf70;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* Add Offering Art Selector */
+.add-offering-art-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.art-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+
+.art-choice-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.45rem;
+  background: rgba(22, 16, 10, 0.85);
+  border: 1.5px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.art-choice-btn:hover {
+  background: rgba(38, 28, 16, 0.95);
+  border-color: var(--color-marigold);
+  transform: translateY(-2px);
+}
+
+.art-choice-btn.is-selected {
+  background: rgba(50, 36, 18, 0.95);
+  border-color: var(--color-gold-bright);
+  box-shadow: 0 0 15px rgba(255, 140, 0, 0.35);
+  color: #ffdf70;
+}
+
+.art-choice-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 .add-offering-btn {
@@ -1790,124 +1910,148 @@ textarea:focus {
 
 .provider-cards-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.85rem;
-  margin-top: 0.65rem;
+  margin-top: 0.75rem;
 }
 
 .provider-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 1rem;
-  border-radius: 10px;
-  background: rgba(14, 17, 28, 0.75);
+  border-radius: 12px;
+  background: rgba(18, 14, 10, 0.85);
   border: 1.5px solid rgba(212, 175, 55, 0.25);
   cursor: pointer;
   transition: var(--transition-smooth);
 }
 
 .provider-card:hover {
-  background: rgba(22, 28, 45, 0.9);
+  background: rgba(30, 22, 14, 0.95);
   border-color: var(--color-gold-foil);
+  transform: translateY(-2px);
 }
 
-.provider-card.is-selected {
-  border-color: var(--color-marigold);
-  background: rgba(255, 140, 0, 0.12);
-  box-shadow: 0 0 15px rgba(255, 140, 0, 0.25);
+.provider-card.is-active {
+  border-color: var(--color-gold-bright);
+  background: radial-gradient(circle at 50% 0%, rgba(45, 32, 18, 0.95) 0%, rgba(20, 15, 10, 0.98) 100%);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 140, 0, 0.3);
 }
 
-.provider-card-header {
+.provider-card-top {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.35rem;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
 }
 
-.provider-name {
-  font-weight: 600;
-  font-size: 0.92rem;
+.provider-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.provider-badge.offline {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.provider-badge.local {
+  background: rgba(255, 183, 3, 0.2);
+  color: #ffd700;
+  border: 1px solid rgba(255, 183, 3, 0.4);
+}
+
+.provider-badge.cloud {
+  background: rgba(96, 165, 250, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+.provider-icon {
+  color: var(--color-gold-bright);
+}
+
+.provider-card h4 {
+  font-family: var(--font-serif-display);
+  font-size: 0.95rem;
   color: #ffdf70;
-  flex: 1;
+  margin: 0 0 0.35rem;
 }
 
-.check-active {
-  color: var(--color-marigold);
-}
-
-.provider-desc {
-  font-size: 0.8rem;
+.provider-card p {
+  font-size: 0.78rem;
   color: var(--color-text-subtle);
   line-height: 1.45;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.75rem;
 }
 
-.provider-tag {
+.provider-status-tag {
   font-size: 0.7rem;
-  color: #93c5fd;
-  background: rgba(147, 197, 253, 0.12);
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
+  color: #ffd700;
+  font-weight: 500;
 }
 
-.ollama-config-panel {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+.config-fields-panel {
+  background: rgba(14, 10, 6, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 10px;
   padding: 1.15rem;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
-.ollama-config-panel h4 {
-  font-size: 0.85rem;
+.config-fields-panel h4 {
+  font-family: var(--font-serif-display);
+  font-size: 0.9rem;
   color: #ffdf70;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
-.ollama-test-row {
+.test-connection-row {
   display: flex;
   align-items: center;
   gap: 0.85rem;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }
 
-.btn-test-ollama {
-  padding: 0.45rem 0.85rem;
+.btn-test-connection {
+  padding: 0.5rem 1rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.35);
   color: #ffffff;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: var(--transition-smooth);
 }
 
-.test-alert {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.78rem;
-}
-
-.test-alert.success { color: #4ade80; }
-.test-alert.error { color: #f87171; }
-
-.detected-models-strip {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-top: 0.65rem;
-  font-size: 0.75rem;
-  color: var(--color-text-subtle);
-}
-
-.model-tag-pill {
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
+.btn-test-connection:hover:not(:disabled) {
   background: rgba(255, 140, 0, 0.2);
-  border: 1px solid var(--color-marigold);
-  color: #ffd700;
+  border-color: var(--color-gold-bright);
+}
+
+.test-result {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.test-result.success { color: #4ade80; }
+.test-result.error { color: #f87171; }
+
+.field-hint {
+  display: block;
   font-size: 0.72rem;
-  cursor: pointer;
+  color: var(--color-text-subtle);
+  margin-top: 0.35rem;
 }
 
 /* ==========================================================================
@@ -1971,17 +2115,47 @@ textarea:focus {
 }
 
 .element-card {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 10px;
+  padding: 0.85rem 0.65rem;
   text-align: center;
 }
 
-.element-emoji {
-  font-size: 1.6rem;
-  display: block;
-  margin-bottom: 0.3rem;
+.element-icon-circle {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.element-icon-circle.wind {
+  background: rgba(42, 157, 143, 0.25);
+  color: #2a9d8f;
+  border-color: #2a9d8f;
+}
+
+.element-icon-circle.fire {
+  background: rgba(230, 57, 70, 0.25);
+  color: #ff8c00;
+  border-color: #e63946;
+}
+
+.element-icon-circle.water {
+  background: rgba(67, 97, 238, 0.25);
+  color: #4cc9f0;
+  border-color: #4361ee;
+}
+
+.element-icon-circle.earth {
+  background: rgba(247, 127, 0, 0.25);
+  color: #ffd166;
+  border-color: #f77f00;
 }
 
 .element-card h4 {

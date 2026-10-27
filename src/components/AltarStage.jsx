@@ -1,25 +1,23 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import AncestorCard from './AncestorCard';
 import OfferingItem from './OfferingItem';
 import Candle from './Candle';
+import { CalaveraAzucarArt, CempasuchilFlowerArt } from './AltarArtwork';
+import { BotanicalMarigoldArch, BotanicalPetalFloorPath } from './CempasuchilDecorations';
 import {
   Plus,
-  Sparkles,
-  Flower2,
   Flame,
-  Heart,
-  BookOpen,
   Search,
   X,
-  Filter,
-  Keyboard
+  Flower2,
+  Sparkles
 } from 'lucide-react';
 import { translations } from '../utils/translations';
 
 /**
- * AltarStage — The 3-Tier Traditional Altar (La Ofrenda de Tres Niveles).
- * Tier 3: El Cielo (Ancestral guides & luminaries under the marigold arch)
- * Tier 2: La Tierra (Our loved ones, personal memories, pets, and keepsakes)
+ * AltarStage — The 3-Tier Traditional Mexican Altar (La Ofrenda de Tres Niveles).
+ * Tier 3: El Cielo (Ancestral guides & luminaries under the botanical marigold arch)
+ * Tier 2: La Tierra (Our loved ones, personal memories, pets, and keepsakes draped in lace)
  * Tier 1: El Inframundo / Purificación (Water, salt, pan de muerto, copal, and vigil candles)
  */
 export default function AltarStage({
@@ -36,7 +34,6 @@ export default function AltarStage({
   onToggleAllCandles,
   onScatterPetals,
   allCandlesLit,
-  onOpenShortcuts,
   searchInputRef
 }) {
   const t = translations[lang] || translations.es;
@@ -47,7 +44,6 @@ export default function AltarStage({
 
   // Filter ancestors based on search & category
   const filteredAncestors = ancestors.filter((a) => {
-    // Search match
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
       !q ||
@@ -57,12 +53,18 @@ export default function AltarStage({
 
     if (!matchesSearch) return false;
 
-    // Category match
     if (activeFilter === 'tier3') return a.tier === 3;
     if (activeFilter === 'tier2') return a.tier === 2 || !a.tier;
     if (activeFilter === 'pets') {
       const rel = (a.relationship || '').toLowerCase();
-      return rel.includes('pet') || rel.includes('perro') || rel.includes('gato') || rel.includes('mascota') || rel.includes('companion') || rel.includes('fiel');
+      return (
+        rel.includes('pet') ||
+        rel.includes('perro') ||
+        rel.includes('gato') ||
+        rel.includes('mascota') ||
+        rel.includes('companion') ||
+        rel.includes('fiel')
+      );
     }
     if (activeFilter === 'lit') return a.candleLit;
 
@@ -76,45 +78,42 @@ export default function AltarStage({
 
   return (
     <div className="altar-stage-container">
-      {/* Interactive Guidance & Quick Actions Banner */}
-      <div className="welcome-banner-wrap">
-        <div className="welcome-banner-card">
-          <div className="welcome-banner-text">
-            <span className="welcome-icon">🕯️</span>
-            <div>
-              <h3>{t.welcomeTitle}</h3>
-              <p>{t.welcomeDesc}</p>
-            </div>
+      {/* Reverent Altar Dedication & Gentle Sanctuary Inscription */}
+      <div className="altar-dedication-wrap">
+        <div className="altar-dedication-content">
+          <div className="dedication-title-row">
+            <h2 className="altar-sacred-title">{t.welcomeTitle}</h2>
           </div>
+          <p className="altar-sacred-desc">{t.welcomeDesc}</p>
 
-          <div className="welcome-quick-actions">
+          <div className="altar-reverent-actions">
             <button
               type="button"
-              className="quick-action-pill highlight"
+              className={`reverent-action-btn ${allCandlesLit ? 'active' : ''}`}
               onClick={onToggleAllCandles}
-              title="Toggle all candles [C]"
+              title="Encender o apagar todas las velas [C]"
             >
-              <Flame size={14} />
+              <Flame size={15} />
               <span>{allCandlesLit ? t.btnExtinguishAll : t.btnLightAll}</span>
             </button>
 
             <button
               type="button"
-              className="quick-action-pill"
+              className="reverent-action-btn"
               onClick={onScatterPetals}
-              title="Scatter marigolds [Space]"
+              title="Esparcir pétalos de Cempasúchil [Space]"
             >
-              <Flower2 size={14} />
+              <Flower2 size={15} />
               <span>{t.btnScatterPetals}</span>
             </button>
 
             <button
               type="button"
-              className="quick-action-pill primary"
+              className="reverent-action-btn primary"
               onClick={onOpenAddAncestor}
-              title="Add a beloved one [A]"
+              title="Colocar a un ser querido o mascota en el altar [A]"
             >
-              <Plus size={14} />
+              <Plus size={15} />
               <span>{t.btnAddLovedOne}</span>
             </button>
           </div>
@@ -138,7 +137,7 @@ export default function AltarStage({
               type="button"
               className="clear-search-btn"
               onClick={() => setSearchQuery('')}
-              title="Clear search"
+              title="Limpiar búsqueda"
             >
               <X size={14} />
             </button>
@@ -184,16 +183,8 @@ export default function AltarStage({
         </div>
       </div>
 
-      {/* Background Arch of Marigolds (Arco de Cempasúchil) */}
-      <div className="cempasuchil-arch">
-        <div className="arch-garland-left">🌼 🌸 🌼 🌸 🌼</div>
-        <div className="arch-crest">
-          <Flower2 size={24} className="crest-icon" />
-          <span className="arch-title">{t.mictlanArch}</span>
-          <Flower2 size={24} className="crest-icon" />
-        </div>
-        <div className="arch-garland-right">🌼 🌸 🌼 🌸 🌼</div>
-      </div>
+      {/* Realistic Botanical Arch of Marigolds (Arco de Cempasúchil) */}
+      <BotanicalMarigoldArch title={t.mictlanArch} />
 
       {/* If search query has 0 matches */}
       {filteredAncestors.length === 0 && (
@@ -221,6 +212,9 @@ export default function AltarStage({
           </div>
 
           <div className="tier-content-shelf">
+            {/* Scalloped Traditional Cream Lace Runner */}
+            <div className="altar-lace-runner" aria-hidden="true"></div>
+
             {/* Central Eternal Vigil Candle */}
             <div className="tier-vigil-center" title="Llama Eterna / Central Altar Vigil">
               <Candle
@@ -243,6 +237,9 @@ export default function AltarStage({
                 />
               ))}
             </div>
+
+            {/* Carved Wood Shelf Lip */}
+            <div className="altar-shelf-edge" aria-hidden="true"></div>
           </div>
         </div>
       )}
@@ -256,6 +253,9 @@ export default function AltarStage({
           </div>
 
           <div className="tier-content-shelf">
+            {/* Scalloped Traditional Cream Lace Runner */}
+            <div className="altar-lace-runner" aria-hidden="true"></div>
+
             <div className="tier-items-row ancestors-grid">
               {tier2Ancestors.map((ancestor) => (
                 <AncestorCard
@@ -267,16 +267,16 @@ export default function AltarStage({
                 />
               ))}
 
-              {/* Quick Add Ancestor Card on Tier 2 */}
+              {/* Add Loved One Card on Tier 2 */}
               <button
                 type="button"
                 className="add-ancestor-card-btn"
                 onClick={onOpenAddAncestor}
-                title="Add a beloved ancestor, pet, or family member to the altar"
+                title="Colocar un ser querido, familiar o mascota en el altar"
               >
                 <div className="add-card-inner">
                   <div className="add-icon-ring">
-                    <Plus size={26} />
+                    <Plus size={24} />
                   </div>
                   <span className="add-card-title">{t.addLovedOneCard}</span>
                   <span className="add-card-subtitle">{t.addLovedOneSub}</span>
@@ -294,6 +294,9 @@ export default function AltarStage({
                 />
               ))}
             </div>
+
+            {/* Carved Wood Shelf Lip */}
+            <div className="altar-shelf-edge" aria-hidden="true"></div>
           </div>
         </div>
       )}
@@ -306,6 +309,9 @@ export default function AltarStage({
         </div>
 
         <div className="tier-content-shelf base-shelf">
+          {/* Scalloped Traditional Cream Lace Runner */}
+          <div className="altar-lace-runner" aria-hidden="true"></div>
+
           {/* Base Row of Traditional Essential Offerings */}
           <div className="offerings-row">
             {tier1Offerings.map((offering) => (
@@ -321,40 +327,30 @@ export default function AltarStage({
               type="button"
               className="add-offering-btn"
               onClick={onOpenAddOffering}
-              title="Add a custom favorite food or item offering"
+              title="Agregar una ofrenda o platillo especial"
             >
               <Plus size={16} />
               <span>{t.addOfferingBtn}</span>
             </button>
           </div>
 
-          {/* Row of Votive Ground Candles */}
+          {/* Row of Authentic Votive Ground Candles & Handcrafted Sugar Skulls */}
           <div className="altar-ground-candles">
             <Candle size="small" glass={true} isLit={altarVigilLit} onToggle={onToggleAltarVigil} />
             <Candle size="small" glass={true} isLit={altarVigilLit} onToggle={onToggleAltarVigil} />
-            <div className="ground-calavera-cluster">
-              <span className="ground-sugar-skull" title="Calavera de Azúcar">💀</span>
-              <span className="ground-flower" title="Pétalos de Cempasúchil">🌼</span>
-              <span className="ground-sugar-skull" title="Calavera de Azúcar">💀</span>
+
+            <div className="ground-calavera-cluster" title="Calaveras de azúcar y flores al pie del altar">
+              <CalaveraAzucarArt size={36} />
+              <CempasuchilFlowerArt size={32} />
+              <CalaveraAzucarArt size={36} />
             </div>
+
             <Candle size="small" glass={true} isLit={altarVigilLit} onToggle={onToggleAltarVigil} />
             <Candle size="small" glass={true} isLit={altarVigilLit} onToggle={onToggleAltarVigil} />
           </div>
 
-          {/* Golden Marigold Petal Pathway (Camino de Cempasúchil) */}
-          <div
-            className="cempasuchil-pathway"
-            onClick={onScatterPetals}
-            title="Click to scatter glowing cempasúchil petals!"
-            role="button"
-            tabIndex={0}
-          >
-            <div className="pathway-petals">
-              <span>🌼</span><span>🌸</span><span>🌼</span><span>🌼</span><span>🌸</span><span>🌼</span>
-              <span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌼</span>
-            </div>
-            <span className="pathway-label">{t.caminoPetals}</span>
-          </div>
+          {/* Golden Marigold Petal Pathway across the Floor (Camino de Cempasúchil) */}
+          <BotanicalPetalFloorPath onClick={onScatterPetals} label={t.caminoPetals} />
         </div>
       </div>
     </div>

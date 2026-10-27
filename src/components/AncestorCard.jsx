@@ -1,11 +1,13 @@
 import React from 'react';
 import Candle from './Candle';
 import { Sparkles, BookOpen } from 'lucide-react';
+import { FrameMarigoldGarland } from './CempasuchilDecorations';
 import { translations } from '../utils/translations';
 
 /**
- * AncestorCard — Ornate framed portrait on the altar tiers.
- * Features realistic gold filigree, marigolds, dedicated candle, and remembrance trigger.
+ * AncestorCard — Ornate carved wooden & gold filigree portrait frame on the altar.
+ * Features botanical marigold header, authentic vintage photo aging, dedicated votive candle,
+ * and tactile remembrance trigger.
  */
 export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang = 'es' }) {
   const t = translations[lang] || translations.es;
@@ -20,7 +22,7 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang 
         if (e.key === 'Enter') onSelect(ancestor);
       }}
     >
-      {/* Ornate Frame Outer */}
+      {/* Ornate Frame Outer (Carved antique walnut with gold leaf accents) */}
       <div className="frame-border">
         {/* Decorative corner filigree */}
         <div className="corner-filigree top-left"></div>
@@ -28,11 +30,9 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang 
         <div className="corner-filigree bottom-left"></div>
         <div className="corner-filigree bottom-right"></div>
 
-        {/* Marigold Garland Header */}
+        {/* Botanical Marigold Garland Header */}
         <div className="frame-marigolds">
-          <span className="flower-accent">🌼</span>
-          <span className="flower-accent center-flower">🌸</span>
-          <span className="flower-accent">🌼</span>
+          <FrameMarigoldGarland />
         </div>
 
         {/* Photograph Window */}
@@ -43,11 +43,11 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang 
             className="ancestor-photo"
             loading="lazy"
             onError={(e) => {
-              // Fallback to stylized silhouette if image link expires
               e.target.src = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
             }}
           />
           <div className="photo-vignette"></div>
+          <div className="photo-glass-reflection"></div>
 
           {/* Quick AI Calaverita Badge */}
           {ancestor.calaverita && (
@@ -57,7 +57,7 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang 
           )}
         </div>
 
-        {/* Nameplate */}
+        {/* Traditional Inscribed Brass Nameplate */}
         <div className="ancestor-nameplate">
           <h3 className="ancestor-name">{ancestor.name}</h3>
           <p className="ancestor-years">{ancestor.years}</p>
@@ -71,7 +71,7 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang 
         </div>
       </div>
 
-      {/* Dedicated Vigil Candle in front of the frame */}
+      {/* Dedicated Votive Candle in front of the frame */}
       <div className="ancestor-candle-spot">
         <Candle
           isLit={ancestor.candleLit}
