@@ -1,16 +1,21 @@
-// El Guardián del Recuerdo — Open-Source AI Engine
-// Supports both high-speed local in-browser neural synthesis (Gemma 2 prompt template)
-// and direct localhost Ollama API (gemma2, llama3, qwen) for complete local privacy.
+// El Guardián del Recuerdo — Cultural Memory & Verse Engine
+// Supports:
+// 1. Local Ollama Runtime (Google Gemma 2: 2B / 9B, Llama 3.2) on localhost:11434
+// 2. Google Gemini API (Gemini 1.5 Flash / Gemma 2 via free Google AI Studio key)
+// 3. Traditional Folkloric Chronicler (100% Offline algorithmic verse bard based on authentic Mexican coplas & décimas)
 
 export const AI_PROVIDERS = {
-  LOCAL_GEMMA: 'local_gemma', // Built-in local zero-latency open engine
-  OLLAMA: 'ollama'            // Local Ollama instance (e.g. gemma2:2b / gemma2:9b)
+  OLLAMA: 'ollama',                   // Local Ollama instance (e.g. gemma2:2b / gemma2:9b)
+  GEMINI_API: 'gemini_api',           // Direct Google Gemini API (Gemma / Gemini 1.5 Flash)
+  FOLKLORIC_ENGINE: 'folkloric_engine'// 100% Offline authentic verse bard & dialogue generator
 };
 
 export const AI_CONFIG = {
-  activeProvider: AI_PROVIDERS.LOCAL_GEMMA,
+  activeProvider: AI_PROVIDERS.FOLKLORIC_ENGINE,
   ollamaUrl: 'http://localhost:11434',
-  ollamaModel: 'gemma2:2b'
+  ollamaModel: 'gemma2:2b',
+  geminiApiKey: '',
+  geminiModel: 'gemini-1.5-flash'
 };
 
 /**
@@ -19,7 +24,7 @@ export const AI_CONFIG = {
 export function setAiConfig(newConfig) {
   Object.assign(AI_CONFIG, newConfig);
   try {
-    localStorage.setItem('ofrenda_ai_config', JSON.stringify(AI_CONFIG));
+    localStorage.setItem('ofrenda_ai_config_v2', JSON.stringify(AI_CONFIG));
   } catch (e) {
     console.warn('Could not save AI config to localStorage', e);
   }
@@ -27,7 +32,7 @@ export function setAiConfig(newConfig) {
 
 export function getAiConfig() {
   try {
-    const saved = localStorage.getItem('ofrenda_ai_config');
+    const saved = localStorage.getItem('ofrenda_ai_config_v2');
     if (saved) {
       Object.assign(AI_CONFIG, JSON.parse(saved));
     }
@@ -38,7 +43,7 @@ export function getAiConfig() {
 }
 
 /**
- * Generates traditional Calaverita Literaria, Poetic Elegy, or Memory Dialogue
+ * Generates traditional Calaverita Literaria, Poetic Elegy, Oral History, or Ancestral Dialogue
  */
 export async function generateRemembrance({
   ancestor,
@@ -48,41 +53,63 @@ export async function generateRemembrance({
 }) {
   const config = getAiConfig();
 
+  // Mode 1: Local Ollama with Google Gemma 2
   if (config.activeProvider === AI_PROVIDERS.OLLAMA) {
     try {
       return await callOllama({ ancestor, type, userPrompt, language, config });
     } catch (err) {
-      console.warn('Ollama connection failed, falling back to Local Gemma engine:', err);
-      // Fallback seamlessly to local engine so the user never gets an error
-      return generateLocalNeuralSynthesis({ ancestor, type, userPrompt, language, fallbackNotice: true });
+      console.warn('Ollama unavailable, using Folkloric Engine:', err.message);
+      return generateFolkloricVerse({
+        ancestor,
+        type,
+        userPrompt,
+        language,
+        providerNotice: `Folkloric Engine (Ollama unavailable: ${err.message})`
+      });
     }
   }
 
-  // Default: Pure local open neural engine (100% offline, guaranteed instant execution)
-  return generateLocalNeuralSynthesis({ ancestor, type, userPrompt, language });
+  // Mode 2: Google Gemini API (Live Cloud AI)
+  if (config.activeProvider === AI_PROVIDERS.GEMINI_API && config.geminiApiKey) {
+    try {
+      return await callGeminiApi({ ancestor, type, userPrompt, language, config });
+    } catch (err) {
+      console.warn('Gemini API failed, using Folkloric Engine:', err.message);
+      return generateFolkloricVerse({
+        ancestor,
+        type,
+        userPrompt,
+        language,
+        providerNotice: `Folkloric Engine (Gemini API error: ${err.message})`
+      });
+    }
+  }
+
+  // Mode 3: Traditional Folkloric Verse & Dialogue Bard (100% Offline, Instant, Zero Config)
+  return generateFolkloricVerse({ ancestor, type, userPrompt, language });
 }
 
 /**
  * Call local Ollama server running Gemma 2
  */
 async function callOllama({ ancestor, type, userPrompt, language, config }) {
-  const systemPrompt = `You are "El Guardián del Recuerdo", an open-weight cultural AI guardian rooted in the ancient Día de los Muertos traditions.
-Your purpose is to honor departed ancestors with deep respect, poetic artistry, and warmth.
-The ancestor being remembered is: ${ancestor.name} (${ancestor.years || 'Eterno'}), Relationship: ${ancestor.relationship || 'Loved One'}.
-Bio/Memory: ${ancestor.story || 'A cherished soul'}.
-Favorite Foods: ${ancestor.favoriteFoods || 'Pan de muerto and love'}.
-Favorite Songs: ${ancestor.favoriteMusic || 'Traditional melodies'}.
-Key trait: ${ancestor.quirk || 'Kindness'}.`;
+  const systemPrompt = `You are "El Guardián del Recuerdo", a respectful cultural AI chronicler rooted in the Día de los Muertos traditions.
+You honor departed loved ones with poetic artistry, warmth, and dignity.
+Ancestor: ${ancestor.name} (${ancestor.years || 'Eterno'}), Relationship: ${ancestor.relationship || 'Loved One'}.
+Life/Memory: ${ancestor.story || 'A cherished soul'}.
+Favorite Foods: ${ancestor.favoriteFoods || 'Pan de muerto'}.
+Favorite Music: ${ancestor.favoriteMusic || 'Traditional songs'}.
+Quirk/Trait: ${ancestor.quirk || 'Love and guidance'}.`;
 
   let prompt = '';
   if (type === 'calaverita') {
-    prompt = `Write a traditional 4-stanza Calaverita Literaria (satirical, warm poetic verse where La Catrina / La Calaca visits ${ancestor.name} with affection and humor). Write in ${language === 'es' ? 'Spanish' : language === 'bilingual' ? 'Spanish with English translation' : 'English in the traditional rhythm'}.`;
+    prompt = `Write an authentic 4-stanza Calaverita Literaria in traditional octosyllabic verse (rhyming cuartetas where La Catrina / La Calaca visits ${ancestor.name} with affection, humor, and their favorite dishes: ${ancestor.favoriteFoods}). Output in ${language === 'es' ? 'authentic Spanish' : language === 'bilingual' ? 'Spanish followed by an English translation' : 'English in the traditional rhythm'}.`;
   } else if (type === 'elegy') {
-    prompt = `Write a solemn, luminous Poetic Elegy honoring ${ancestor.name}, celebrating their legacy, the warm scent of cempasúchil petals, and the eternal light of their memory on this ofrenda.`;
+    prompt = `Write a solemn, luminous Poetic Elegy honoring ${ancestor.name}, celebrating their legacy, the warm scent of cempasúchil marigolds, and the eternal light of their memory on this ofrenda.`;
   } else if (type === 'story') {
-    prompt = `Synthesize an archival oral history tribute for ${ancestor.name}, connecting their life journey, favorite tastes (${ancestor.favoriteFoods}), and the lessons they left behind.`;
+    prompt = `Compose an oral history remembrance for ${ancestor.name}, weaving together their life story, tastes (${ancestor.favoriteFoods}), and the lessons they left behind.`;
   } else if (type === 'dialogue') {
-    prompt = `The user asks or says: "${userPrompt}". Respond in the warm, gentle voice of ${ancestor.name} speaking from the peace of Mictlán across the veil of candlelight.`;
+    prompt = `The visitor asks or says: "${userPrompt}". Respond gently and warmly in the first-person voice of ${ancestor.name} speaking across the candlelight from the peace of Mictlán. Be comforting, loving, and personal.`;
   }
 
   const response = await fetch(`${config.ollamaUrl}/api/generate`, {
@@ -101,143 +128,222 @@ Key trait: ${ancestor.quirk || 'Kindness'}.`;
   });
 
   if (!response.ok) {
-    throw new Error(`Ollama returned status ${response.status}`);
+    throw new Error(`Ollama status ${response.status}`);
   }
 
   const data = await response.json();
   return {
     content: data.response.trim(),
-    provider: 'Ollama (' + config.ollamaModel + ')',
+    provider: `Ollama (${config.ollamaModel || 'gemma2:2b'})`,
     isOffline: true
   };
 }
 
 /**
- * Built-in High-Fidelity Local Neural Synthesizer
- * Employs Gemma 2 token-probabilistic composition patterns for authentic Calaveritas and Elegies
+ * Call Google Gemini API
  */
-function generateLocalNeuralSynthesis({ ancestor, type, userPrompt, language, fallbackNotice = false }) {
-  const name = ancestor.name || 'Querido Ancestro';
-  const years = ancestor.years || 'En la eternidad';
+async function callGeminiApi({ ancestor, type, userPrompt, language, config }) {
+  const model = config.geminiModel || 'gemini-1.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${config.geminiApiKey}`;
+
+  let instructions = '';
+  if (type === 'calaverita') {
+    instructions = `Write an authentic, rhymed 4-stanza Calaverita Literaria for Día de los Muertos honoring ${ancestor.name}. Include their favorite foods (${ancestor.favoriteFoods}), music (${ancestor.favoriteMusic}), and an affectionate encounter with La Catrina. Language: ${language}.`;
+  } else if (type === 'elegy') {
+    instructions = `Write a poetic elegy honoring ${ancestor.name} (${ancestor.years}), celebrating their memory, marigolds, and the altar candle. Language: ${language}.`;
+  } else if (type === 'story') {
+    instructions = `Write an oral history tribute celebrating ${ancestor.name}, their life story, quirks, and memory. Language: ${language}.`;
+  } else if (type === 'dialogue') {
+    instructions = `The visitor asks: "${userPrompt}". Speak warmly in the first-person voice of ${ancestor.name} from the peace of the afterlife. Give comfort and love. Language: ${language}.`;
+  }
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: instructions }] }],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 800
+      }
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Gemini API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return {
+    content: text.trim(),
+    provider: `Google Gemini (${model})`,
+    isOffline: false
+  };
+}
+
+/**
+ * Traditional Folkloric Verse & Dialogue Bard (Algorithmic Mexican Poetic Engine)
+ * Synthesizes dynamic, rhyming octosyllabic Calaveritas Literarias, elegies, and responsive dialogues.
+ */
+function generateFolkloricVerse({ ancestor, type, userPrompt, language, providerNotice }) {
+  const name = ancestor.name || 'Querido Ser';
+  const years = ancestor.years || 'Eterno';
   const food = ancestor.favoriteFoods || 'pan de muerto';
   const song = ancestor.favoriteMusic || 'la música del viento';
-  const story = ancestor.story || 'una vida llena de luz';
+  const story = ancestor.story || 'una vida colmada de amor';
+  const rel = (ancestor.relationship || '').toLowerCase();
+  const isPet = rel.includes('pet') || rel.includes('perro') || rel.includes('gato') || rel.includes('mascota') || rel.includes('fiel');
 
   let result = '';
 
   if (type === 'calaverita') {
     if (language === 'es' || language === 'bilingual') {
-      result = `Estaba la flaca Catrina
-rondando por la cocina,
-buscando a ${name} con fervor,
-para invitarle un platillo con amor.
+      if (isPet) {
+        result = `Movía la cola el noble ${name},
+al ver a la Catrina entre el jazmín.
+"¡No temas, perrito leal y dorado,
+que en el Mictlán tienes banquete apartado!"
 
-"¡Ay ${name}, no te me escondas!",
-decía la muerte entre las sombras,
-"dejemos hoy las penas a un lado,
-que con ${food} nos daremos un agasajo."
+La flaca sonrió acariciando su frente,
+"Tú fuiste en la tierra el más fiel y valiente;
+hoy cruzas el río con gozo y sin prisa,
+dejando en tu casa recuerdo y sonrisa."
 
-La Catrina al fin sonrió galana
-al ver que en la mesa no faltaba
-aquel son de ${song} sonando,
-y las almas contentas bailando.
+Hoy brilla la ofrenda con dulce azahar,
+tu plato y tu manta no han de faltar:
+¡Guardián de mi senda, lucero de amor,
+te llevo prendido en mi corazón!`;
+      } else {
+        result = `Paseaba la flaca Catrina galana,
+mirando las flores por la ventana,
+buscando a ${name} con gran emoción,
+para compartirle una buena canción.
 
-Hoy en la ofrenda brilla el cempasúchil,
-no hay olvido, ni llanto, ni luto sutil:
-¡Aquí sigue vivo tu recuerdo bendito,
-en el corazón de quienes te amamos infinito!`;
+"¡Ay ${name}, sal de tu rincón!",
+gritaba la parca con dulce fervor,
+"que tengo en la mesa servido el mantel,
+con rico ${food} y miel en panel."
+
+Sonó en la penumbra aquel son de ${song},
+bailaron las almas sin pena ni afán;
+la muerte brindó con respeto sincero:
+"¡Por quien en la vida fue amigo sincero!"
+
+No hay luto en la ofrenda, no hay sombras de ayer:
+tu luz en el pecho vuelve a florecer.
+Por siempre en la gloria tu nombre bendito,
+¡aquí sigues vivo, presente e infinito!`;
+      }
 
       if (language === 'bilingual') {
-        result += `\n\n--- [English Translation] ---\n` +
-`The slender Catrina was pacing through the hall,
-seeking dear ${name} to answer her call.
-"Come now, hide no more among the living shade,
-for today of ${food} a grand banquet is made!"
+        result += `\n\n--- [Poetic English Translation] ---\n` +
+`The elegant Catrina went strolling through the hall,
+Seeking beloved ${name} to answer her festive call.
+"Come now, dear friend, let your memories unfold,
+For a banquet of ${food} awaits in pots of gold!"
 
-Catrina smiled softly, adjusting her crown,
-as ${song} gently drifted through town.
-On our golden ofrenda the marigolds glow:
-Your memory is eternal, and love will never go!`;
+As notes of ${song} drifted softly on the breeze,
+The spirits were dancing beneath autumn trees.
+No sorrow or shadow shall dim your bright name:
+In our hearts and our home, you burn like a flame!`;
       }
     } else {
-      result = `Along the path where marigold petals fall,
-La Catrina strolled softly through the hall.
-She called for ${name} with a playful grin,
-Inviting their spirit to dance once again.
+      // English Calaverita
+      result = `Along the path where the golden petals blow,
+La Catrina walked softly in the candlelight glow.
+She sought out dear ${name} with laughter and grace,
+To bring back the warmth of their smile to this place.
 
-"Leave your weary bones," the sweet Calaca said,
+"Put down your labors," the sweet Calaca said,
 "For a table with ${food} has brightly been spread!
-With ${song} playing soft on the breeze,
-We celebrate a lifetime of joy and memories."
+With ${song} playing soft on the autumn night air,
+We honor the legacy that you left us to share."
 
-Though the seasons change and the years run fast,
-The love that you sowed will forever outlast.
-Rest easy, dear soul, by the candlelight clear,
-For whenever we remember, you are always here.`;
+The veil grows so quiet, the night turns to gold,
+A story of kindness that never grows old.
+Rest gently, dear soul, by the marigold flower:
+Your love is our beacon in every quiet hour.`;
     }
   } else if (type === 'elegy') {
     if (language === 'es' || language === 'bilingual') {
-      result = `A la Memoria Eterna de ${name} (${years})
+      result = `A la Memoria Sagrada de ${name} (${years})
 
-Bajo el dosel dorado del cempasúchil,
-el copal eleva su plegaria al firmamento.
-No estás ausente: habitas en la risa que nos diste,
-en el aroma del ${food} que perfuma el altar,
-y en cada acorde de ${song} que acaricia la noche.
+Bajo el arco dorado del cempasúchil florecido,
+el copal eleva su plegaria transparente al firmamento.
+No has partido al olvido: habitas en el silencio sagrado de esta casa,
+en el perfume a canela y ${food} que perfuma el altar,
+y en cada acorde de ${song} que acaricia las horas de la noche.
 
-La muerte no apaga la luz;
-simplemente enciende una veladora en el infinito
-para que no olvidemos el camino a casa.
+La muerte en nuestro pueblo no extingue la lumbre;
+solamente enciende una veladora en el camino de Mictlán
+para que nunca olvidemos el sendero que nos une.
 
-Que esta ofrenda sea el puente sagrado
-donde hoy nos encontramos una vez más,
-abrazados por la llama que nunca se extingue.`;
+Descansa en la paz de las estrellas, alma amada.
+Mientras pronunciemos tu nombre ante este fuego,
+tu historia permanecerá viva, entera y eterna.`;
 
       if (language === 'bilingual') {
-        result += `\n\n--- [English Verse] ---\n` +
-`Under the golden canopy of marigold petals,
-copal resin lifts our prayers to the twilight sky.
-You are not gone: you dwell within the laughter you gave us,
-in the comforting scent of ${food} upon the altar,
-and in every gentle chord of ${song} across the quiet room.
+        result += `\n\n--- [English Translation] ---\n` +
+`In Sacred Remembrance of ${name} (${years})
+
+Under the golden canopy of blooming marigold flowers,
+copal resin lifts our quiet prayer toward the twilight sky.
+You have not faded into sorrow: you dwell within this home,
+in the comforting scent of ${food} resting upon the altar,
+and in every gentle refrain of ${song} across the quiet room.
+
 Death does not extinguish your flame;
-it only lights an eternal candle in Mictlán
+it only lights a guiding candle across the river of Mictlán
 so our hearts can always find you.`;
       }
     } else {
-      result = `In Loving Memory of ${name} (${years})
+      result = `In Sacred Memory of ${name} (${years})
 
-The veil between worlds grows quiet and thin,
+The veil between worlds grows peaceful and thin,
 Where golden marigold pathways begin.
-We light this candle not for sorrow or grief,
-But for a life of courage, love, and belief.
+We light this candle not in darkness or grief,
+But for a lifetime of kindness, courage, and belief.
 
-The scent of ${food} greets your returning soul,
+The warm scent of ${food} greets your returning soul,
 As echoes of ${song} make our spirits whole.
-Your memory is a flame that time cannot part;
-Tonight you sit in the center of our heart.`;
+Time cannot sever the love in our heart:
+Whenever we remember, we are never apart.`;
     }
   } else if (type === 'story') {
     result = `Crónica del Recuerdo: ${name}
 
-En las páginas del tiempo queda grabada la esencia de ${name}. Quienes caminaron a su lado recuerdan una vida marcada por "${story}".
+Entre los hilos del tiempo queda labrada la memoria de ${name}. Quienes compartieron su camino recuerdan "${story}".
 
-Su presencia en nuestra mesa siempre fue motivo de fiesta: bastaba servir un poco de ${food} y sintonizar ${song} para que las anécdotas cobraran vida y las horas se volvieran breves.
+Su presencia en nuestra mesa siempre fue motivo de fiesta: bastaba servir un poco de ${food} y escuchar ${song} para que las horas se volvieran breves y las penas encontraran consuelo.
 
-Hoy, al colocar su fotografía en el altar de Día de los Muertos, no invocamos la sombra del adiós, sino la plenitud del agradecimiento. Cada pétalo de flor cempasúchil colocado a sus pies es una promesa viva: mientras pronunciemos tu nombre, tu historia permanecerá inmortal.`;
+Hoy, al colocar su retrato en este altar tradicional de Día de los Muertos, no invocamos la tristeza de la ausencia, sino la dicha inmensa de haber compartido su tiempo en la tierra. Cada pétalo de cempasúchil a sus pies es una promesa sagrada: mientras mantengamos encendida su luz, su voz no callará jamás.`;
   } else if (type === 'dialogue') {
-    result = `(Una voz cálida resuena entre el murmullo de las veladoras y el perfume a copal...)
+    // Context-sensitive dialogue generator
+    const query = (userPrompt || '').toLowerCase();
 
-"Hijo mío, hija mía... no estés triste. Siento la tibieza de la vela que encendiste para mí, y me alegra ver en tu corazón que aún recuerdas mi platillo favorito, aquel ${food}, y cómo me gustaba escuchar ${song}.
+    let replyBody = '';
+    if (query.includes('cómo estás') || query.includes('how are you') || query.includes('dónde estás') || query.includes('where are you')) {
+      replyBody = `Estoy en profunda paz, rodeado por la calma luminosa de Mictlán. Aquí no hay dolor, ni cansancio, ni inviernos fríos. Siento cada pensamiento que me dedicas y veo con alegría el sendero de flores que me pusiste.`;
+    } else if (query.includes('te extraño') || query.includes('miss you') || query.includes('lloro') || query.includes('sad') || query.includes('triste')) {
+      replyBody = `No llores por mí, corazón mío. Sé que el silencio duele, pero la distancia es sólo una ilusión. Cada vez que sientas el calor del café por la mañana, o escuches aquel son de ${song}, recuerda que estoy a tu lado acariciando tu hombro.`;
+    } else if (query.includes('comida') || query.includes('food') || query.includes('receta') || query.includes('comer') || query.includes('pan')) {
+      replyBody = `¡Qué dicha ver que no olvidaste mi platillo preferido! El aroma de ${food} llegó hasta el otro lado del río. El verdadero secreto de la cocina nunca fueron los ingredientes, sino el amor con el que servíamos a los nuestros.`;
+    } else if (query.includes('consejo') || query.includes('advice') || query.includes('miedo') || query.includes('vida') || query.includes('life')) {
+      replyBody = `Sigue caminando con la frente en alto. La vida es breve como un suspiro de otoño; no la gastes en rencores ni en dudas. Ríe fuerte, abraza a los tuyos con el alma y vive de tal manera que cuando mires atrás, sólo veas flores en tu sendero.`;
+    } else {
+      replyBody = `Siento la tibieza de la vela que encendiste para mí en el altar. A tu pregunta sobre "${userPrompt || 'la vida y la memoria'}": debes saber que el amor verdadero trasciende cualquier frontera terrenal. Yo estoy bien. Cuida a la familia, sé feliz y recuerda que siempre que me pienses, estaré contigo.`;
+    }
 
-A tu pregunta sobre '${userPrompt || 'la vida y el recuerdo'}': debes saber que la muerte no tiene poder sobre el amor verdadero. Yo estoy en paz. Sigue viviendo con valentía, ríe con fuerza y no temas a las sombras del mundo, porque cada vez que enciendas una luz, yo estaré a tu lado acompañando tus pasos."`;
+    result = `(Una voz cálida y familiar susurra entre el parpadeo de las veladoras y el aroma a copal...)
+
+"${replyBody}"`;
   }
 
   return {
     content: result,
-    provider: fallbackNotice 
-      ? 'Gemma 2 Local Open Neural Engine (Ollama Offline Fallback)' 
-      : 'Gemma 2 Local Open Engine (100% Private & Offline)',
+    provider: providerNotice || 'Folkloric Chronicler (100% Offline Archival Bard)',
     isOffline: true
   };
 }

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 /**
- * MemorialModal — Deep remembrance view and Open-Source AI Chronicler.
+ * MemorialModal — Deep remembrance view and Cultural AI Chronicler.
  * Generates Calaveritas Literarias, elegies, oral history, and ancestral dialogue.
  */
 export default function MemorialModal({
@@ -46,7 +46,7 @@ export default function MemorialModal({
   const [dialogueQuery, setDialogueQuery] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState(ancestor.calaverita || '');
-  const [activeProviderName, setActiveProviderName] = useState('Gemma 2 Open Neural Engine');
+  const [activeProviderName, setActiveProviderName] = useState('Bardo Folclórico Tradicional');
   const [copied, setCopied] = useState(false);
   const [flowerOffered, setFlowerOffered] = useState(false);
 
@@ -70,7 +70,7 @@ export default function MemorialModal({
         });
       }
     } catch (err) {
-      console.error('Error generating verse:', err);
+      console.error('Error al generar verso:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -87,10 +87,10 @@ export default function MemorialModal({
     setFlowerOffered(true);
     try {
       confetti({
-        particleCount: 30,
+        particleCount: 28,
         spread: 60,
         origin: { y: 0.6 },
-        colors: ['#ff8c00', '#ffd700', '#ff007f']
+        colors: ['#ff8c00', '#ffd700', '#e85d04']
       });
     } catch {}
     setTimeout(() => setFlowerOffered(false), 2500);
@@ -118,8 +118,8 @@ export default function MemorialModal({
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Close memorial dialog"
-          title="Close (Esc)"
+          aria-label="Cerrar ventana de recuerdo"
+          title="Cerrar (Esc)"
         >
           <X size={20} />
         </button>
@@ -151,10 +151,10 @@ export default function MemorialModal({
                 type="button"
                 className={`memorial-tribute-btn ${flowerOffered ? 'offered' : ''}`}
                 onClick={handleOfferFlower}
-                title="Leave an offering flower"
+                title="Ofrendar una flor de cempasúchil"
               >
                 <Flower2 size={13} />
-                <span>{flowerOffered ? 'Ofrenda Entregada 🌼' : 'Ofrendar Flor 🌼'}</span>
+                <span>{flowerOffered ? 'Ofrenda Entregada' : 'Ofrendar Flor'}</span>
               </button>
             </div>
             <h2 className="memorial-name">{ancestor.name}</h2>
@@ -172,7 +172,7 @@ export default function MemorialModal({
               <div className="fav-pill">
                 <Utensils size={14} className="fav-icon" />
                 <div>
-                  <span className="fav-label">Favorite Foods:</span>
+                  <span className="fav-label">Platillos y Sabores:</span>
                   <span className="fav-value">{ancestor.favoriteFoods}</span>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function MemorialModal({
               <div className="fav-pill">
                 <Music size={14} className="fav-icon" />
                 <div>
-                  <span className="fav-label">Beloved Melodies:</span>
+                  <span className="fav-label">Música y Melodías:</span>
                   <span className="fav-value">{ancestor.favoriteMusic}</span>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function MemorialModal({
             <div className="chronicler-title-group">
               <Sparkles size={18} className="chronicler-sparkle" />
               <h3 className="chronicler-title">El Guardián del Recuerdo</h3>
-              <span className="chronicler-badge">Open-Source AI</span>
+              <span className="chronicler-badge">Cronista de Memoria</span>
             </div>
 
             {/* Language switch */}
@@ -212,7 +212,7 @@ export default function MemorialModal({
                 className={`lang-btn ${language === 'bilingual' ? 'is-active' : ''}`}
                 onClick={() => setLanguage('bilingual')}
               >
-                Bilingual
+                Bilingüe
               </button>
               <button
                 type="button"
@@ -247,7 +247,7 @@ export default function MemorialModal({
               }}
             >
               <Heart size={14} />
-              <span>Poetic Elegy</span>
+              <span>Elegía Poética</span>
             </button>
 
             <button
@@ -259,7 +259,7 @@ export default function MemorialModal({
               }}
             >
               <BookOpen size={14} />
-              <span>Oral History</span>
+              <span>Historia Oral</span>
             </button>
 
             <button
@@ -268,17 +268,17 @@ export default function MemorialModal({
               onClick={() => setActiveTab('dialogue')}
             >
               <MessageSquare size={14} />
-              <span>Spirit Dialogue</span>
+              <span>Diálogo Espiritual</span>
             </button>
           </div>
 
-          {/* Dialogue Query Input & Instant Suggestions (when dialogue tab is active) */}
+          {/* Dialogue Query Input & Instant Suggestions */}
           {activeTab === 'dialogue' && (
             <div className="dialogue-box-container">
               <div className="dialogue-input-box">
                 <input
                   type="text"
-                  placeholder={`Preguntar a ${ancestor.name}...`}
+                  placeholder={`Preguntar algo a ${ancestor.name}...`}
                   value={dialogueQuery}
                   onChange={(e) => setDialogueQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -293,13 +293,13 @@ export default function MemorialModal({
                   disabled={isGenerating}
                 >
                   <Sparkles size={16} />
-                  <span>Preguntar</span>
+                  <span>Conversar</span>
                 </button>
               </div>
 
               {/* Quick Prompt Suggestions */}
               <div className="dialogue-suggestions">
-                <span className="suggestions-label">Sugerencias rápidas:</span>
+                <span className="suggestions-label">Preguntas de reflexión:</span>
                 <div className="suggestions-chips">
                   {dialogueSuggestions.map((promptText, idx) => (
                     <button
@@ -324,17 +324,17 @@ export default function MemorialModal({
             {isGenerating ? (
               <div className="generating-state">
                 <div className="flame-spinner"></div>
-                <p>Consultando pesos abiertos de Gemma 2 &amp; tejiendo versos del más allá...</p>
-                <span className="generating-sub">100% privado en tu navegador &bull; Sin servidores de terceros</span>
+                <p>Tejiendo versos del recuerdo en el silencio de las velas...</p>
+                <span className="generating-sub">Inferencia privada y reverente</span>
               </div>
             ) : (
               <>
-                <pre className="verse-text">{generatedText || 'Haz clic en una pestaña para componer un verso o relato con IA.'}</pre>
+                <pre className="verse-text">{generatedText || 'Haz clic en una pestaña para componer un verso o memoria tradicional.'}</pre>
 
                 <div className="verse-actions-bar">
                   <div className="privacy-indicator">
                     <ShieldCheck size={14} className="privacy-icon" />
-                    <span>{activeProviderName} &bull; Modelo abierto local</span>
+                    <span>{activeProviderName}</span>
                   </div>
 
                   <div className="verse-buttons">
@@ -342,10 +342,10 @@ export default function MemorialModal({
                       type="button"
                       className="verse-btn"
                       onClick={() => handleGenerate(activeTab)}
-                      title="Re-componer verso"
+                      title="Recomponer verso"
                     >
                       <Sparkles size={14} />
-                      <span>Re-componer</span>
+                      <span>Recomponer</span>
                     </button>
                     <button
                       type="button"

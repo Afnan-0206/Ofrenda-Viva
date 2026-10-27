@@ -7,8 +7,8 @@ import {
   Zap,
   CheckCircle2,
   AlertCircle,
-  HardDriveDownload,
-  Lock
+  Key,
+  Feather
 } from 'lucide-react';
 import {
   AI_PROVIDERS,
@@ -18,15 +18,18 @@ import {
 } from '../utils/aiEngine';
 
 /**
- * AiSettingsModal — Configuration for Open-Source AI (Gemma 2 / Ollama)
- * Demonstrates why open weights and local execution are indispensable for private family grief.
+ * AiSettingsModal — Configuration for Cultural AI Chronicler
+ * Offers transparent choices: Local Ollama (Google Gemma 2), Live Google Gemini API,
+ * or 100% Offline Traditional Folkloric Verse Bard.
  */
 export default function AiSettingsModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
-  const [provider, setProvider] = useState(AI_PROVIDERS.LOCAL_GEMMA);
+  const [provider, setProvider] = useState(AI_PROVIDERS.FOLKLORIC_ENGINE);
   const [ollamaUrl, setOllamaUrl] = useState('http://localhost:11434');
   const [ollamaModel, setOllamaModel] = useState('gemma2:2b');
+  const [geminiApiKey, setGeminiApiKey] = useState('');
+  const [geminiModel, setGeminiModel] = useState('gemini-1.5-flash');
   const [testStatus, setTestStatus] = useState(null); // null | 'testing' | 'success' | 'error'
   const [testResult, setTestResult] = useState('');
   const [availableModels, setAvailableModels] = useState([]);
@@ -39,9 +42,11 @@ export default function AiSettingsModal({ isOpen, onClose }) {
     window.addEventListener('keydown', handleKeyDown);
 
     const config = getAiConfig();
-    setProvider(config.activeProvider || AI_PROVIDERS.LOCAL_GEMMA);
+    setProvider(config.activeProvider || AI_PROVIDERS.FOLKLORIC_ENGINE);
     setOllamaUrl(config.ollamaUrl || 'http://localhost:11434');
     setOllamaModel(config.ollamaModel || 'gemma2:2b');
+    setGeminiApiKey(config.geminiApiKey || '');
+    setGeminiModel(config.geminiModel || 'gemini-1.5-flash');
 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
@@ -50,7 +55,9 @@ export default function AiSettingsModal({ isOpen, onClose }) {
     setAiConfig({
       activeProvider: provider,
       ollamaUrl,
-      ollamaModel
+      ollamaModel,
+      geminiApiKey,
+      geminiModel
     });
     onClose();
   };
@@ -61,10 +68,10 @@ export default function AiSettingsModal({ isOpen, onClose }) {
     if (result.success) {
       setTestStatus('success');
       setAvailableModels(result.models || []);
-      setTestResult(`Connected! Found ${result.models.length} model(s): ${result.models.slice(0, 3).join(', ')}...`);
+      setTestResult(`Conectado exitosamente. Se encontraron ${result.models.length} modelo(s) disponibles.`);
     } else {
       setTestStatus('error');
-      setTestResult(`Could not reach Ollama: ${result.error}. (Falling back automatically to built-in Gemma 2 engine)`);
+      setTestResult(`No se pudo conectar a Ollama (${result.error}). Si no tienes Ollama encendido, puedes usar el Bardo Folclórico sin conexión.`);
     }
   };
 
@@ -75,7 +82,7 @@ export default function AiSettingsModal({ isOpen, onClose }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Close settings"
+          aria-label="Cerrar configuración"
         >
           <X size={20} />
         </button>
@@ -85,9 +92,9 @@ export default function AiSettingsModal({ isOpen, onClose }) {
             <Cpu size={24} />
           </div>
           <div>
-            <h2>Open-Source AI & Model Runtime</h2>
+            <h2>Motor de Inteligencia y Cronista Cultural</h2>
             <p className="ai-header-sub">
-              Empowered by open-weight models (Google Gemma 2 & Ollama). Zero data sent to commercial cloud servers.
+              Elige cómo deseas componer las Calaveritas Literarias, elegías y diálogos de memoria.
             </p>
           </div>
         </div>
@@ -96,148 +103,175 @@ export default function AiSettingsModal({ isOpen, onClose }) {
         <div className="open-innovation-banner">
           <div className="banner-top">
             <ShieldCheck size={20} className="banner-shield" />
-            <h4>Why Open Innovation Matters for Ofrenda Viva</h4>
+            <h4>Soberanía sobre el Duelo y la Memoria Familiar</h4>
           </div>
           <p>
-            Memories of departed loved ones, family grief, and ancestral stories are deeply intimate.
-            Closed commercial APIs (like OpenAI or Anthropic) log prompts on remote servers, train on user inputs,
-            and can lock your family's remembrances behind paywalls or discontinue services.
+            Las fotografías de nuestros abuelos, sus anécdotas y nuestro dolor son sagrados.
+            Al admitir <strong>Ollama local (Gemma 2)</strong> y un <strong>Bardo Folclórico 100% offline</strong>,
+            garantizamos que tus recuerdos nunca se envíen a servidores publicitarios y funcionen aunque se corte el internet.
           </p>
-          <div className="open-benefits-row">
-            <div className="benefit-item">
-              <Lock size={15} />
-              <span>100% Private on Laptop</span>
-            </div>
-            <div className="benefit-item">
-              <Zap size={15} />
-              <span>Runs with Zero Internet</span>
-            </div>
-            <div className="benefit-item">
-              <HardDriveDownload size={15} />
-              <span>Open Forever — No API Keys</span>
-            </div>
-          </div>
         </div>
 
-        {/* Provider Selection */}
+        {/* ================= PROVIDER SELECTOR ================= */}
         <div className="provider-selection-section">
-          <h3>Select Model Runtime:</h3>
+          <h3>Selecciona el Modo de Generación:</h3>
 
           <div className="provider-cards-grid">
-            {/* Provider 1: Local Built-in Gemma 2 Engine */}
+            {/* Choice 1: Folkloric Offline Engine */}
             <div
-              className={`provider-card ${provider === AI_PROVIDERS.LOCAL_GEMMA ? 'is-selected' : ''}`}
-              onClick={() => setProvider(AI_PROVIDERS.LOCAL_GEMMA)}
+              className={`provider-card ${provider === AI_PROVIDERS.FOLKLORIC_ENGINE ? 'is-active' : ''}`}
+              onClick={() => setProvider(AI_PROVIDERS.FOLKLORIC_ENGINE)}
               role="button"
               tabIndex={0}
             >
-              <div className="provider-card-header">
-                <Zap size={18} className="provider-icon-local" />
-                <span className="provider-name">Built-in Gemma 2 Open Engine</span>
-                {provider === AI_PROVIDERS.LOCAL_GEMMA && <CheckCircle2 size={16} className="check-active" />}
+              <div className="provider-card-top">
+                <span className="provider-badge offline">100% Offline</span>
+                <Feather size={20} className="provider-icon" />
               </div>
-              <p className="provider-desc">
-                Instant in-browser neural engine. Requires no software installation, zero setup, and works 100% offline right now.
+              <h4>Bardo Folclórico Tradicional</h4>
+              <p>
+                Generador poético algorítmico basado en coplas y décimas mexicanas auténticas.
+                Funciona al instante sin descargas, sin GPU y sin conexión.
               </p>
-              <span className="provider-tag">Zero Configuration &bull; Recommended</span>
+              <span className="provider-status-tag">✨ Siempre Listo • Cero Configuración</span>
             </div>
 
-            {/* Provider 2: Localhost Ollama (Gemma 2:2B / 9B) */}
+            {/* Choice 2: Local Ollama (Gemma 2) */}
             <div
-              className={`provider-card ${provider === AI_PROVIDERS.OLLAMA ? 'is-selected' : ''}`}
+              className={`provider-card ${provider === AI_PROVIDERS.OLLAMA ? 'is-active' : ''}`}
               onClick={() => setProvider(AI_PROVIDERS.OLLAMA)}
               role="button"
               tabIndex={0}
             >
-              <div className="provider-card-header">
-                <Server size={18} className="provider-icon-server" />
-                <span className="provider-name">Local Ollama (Gemma 2 / Llama 3)</span>
-                {provider === AI_PROVIDERS.OLLAMA && <CheckCircle2 size={16} className="check-active" />}
+              <div className="provider-card-top">
+                <span className="provider-badge local">IA Abierta Local</span>
+                <Server size={20} className="provider-icon" />
               </div>
-              <p className="provider-desc">
-                Connects directly to your local Ollama instance running at localhost. Perfect if you have Gemma 2:2b, 9b or Llama 3 downloaded on your GPU.
+              <h4>Ollama Local (Google Gemma 2)</h4>
+              <p>
+                Ejecuta modelos de pesos abiertos (Gemma 2:2b / 9b, Llama 3.2) directamente en tu propia
+                computadora. Máxima privacidad con inferencia de lenguaje real.
               </p>
-              <span className="provider-tag">Custom Local Hardware Inference</span>
+              <span className="provider-status-tag">🔒 100% Privado en tu GPU/CPU</span>
+            </div>
+
+            {/* Choice 3: Google Gemini API */}
+            <div
+              className={`provider-card ${provider === AI_PROVIDERS.GEMINI_API ? 'is-active' : ''}`}
+              onClick={() => setProvider(AI_PROVIDERS.GEMINI_API)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="provider-card-top">
+                <span className="provider-badge cloud">API en Vivo</span>
+                <Zap size={20} className="provider-icon" />
+              </div>
+              <h4>Google Gemini API (Nube)</h4>
+              <p>
+                Conecta tu clave gratuita de Google AI Studio para generar versos con
+                Gemini 1.5 Flash sin instalar software adicional.
+              </p>
+              <span className="provider-status-tag">⚡ Inferencia en la Nube</span>
             </div>
           </div>
         </div>
 
-        {/* Ollama Configuration Fields (if selected) */}
+        {/* ================= OLLAMA CONFIGURATION FIELDS ================= */}
         {provider === AI_PROVIDERS.OLLAMA && (
-          <div className="ollama-config-panel">
-            <h4>Ollama Local Endpoint Configuration:</h4>
+          <div className="config-fields-panel">
+            <h4>Configuración del Servidor Ollama</h4>
+            <div className="form-group">
+              <label htmlFor="ollama-url">URL de Ollama:</label>
+              <input
+                id="ollama-url"
+                type="text"
+                value={ollamaUrl}
+                onChange={(e) => setOllamaUrl(e.target.value)}
+                placeholder="http://localhost:11434"
+                className="input-text"
+              />
+            </div>
 
-            <div className="form-row">
-              <div className="form-group flex-2">
-                <label>Ollama Server URL</label>
+            <div className="form-group">
+              <label htmlFor="ollama-model">Modelo de Ollama:</label>
+              {availableModels.length > 0 ? (
+                <select
+                  id="ollama-model"
+                  value={ollamaModel}
+                  onChange={(e) => setOllamaModel(e.target.value)}
+                  className="input-select"
+                >
+                  {availableModels.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              ) : (
                 <input
-                  type="text"
-                  value={ollamaUrl}
-                  onChange={(e) => setOllamaUrl(e.target.value)}
-                  placeholder="http://localhost:11434"
-                />
-              </div>
-
-              <div className="form-group flex-1">
-                <label>Model Tag</label>
-                <input
+                  id="ollama-model"
                   type="text"
                   value={ollamaModel}
                   onChange={(e) => setOllamaModel(e.target.value)}
-                  placeholder="gemma2:2b"
+                  placeholder="gemma2:2b, gemma2:9b, llama3.2"
+                  className="input-text"
                 />
-              </div>
+              )}
             </div>
 
-            <div className="ollama-test-row">
+            <div className="test-connection-row">
               <button
                 type="button"
-                className="btn-test-ollama"
+                className="btn-test-connection"
                 onClick={handleTestOllama}
                 disabled={testStatus === 'testing'}
               >
-                {testStatus === 'testing' ? 'Pinging Localhost...' : 'Test Ollama Connection'}
+                {testStatus === 'testing' ? 'Probando conexión...' : 'Probar Conexión con Ollama'}
               </button>
 
               {testStatus === 'success' && (
-                <div className="test-alert success">
+                <div className="test-result success">
                   <CheckCircle2 size={16} />
                   <span>{testResult}</span>
                 </div>
               )}
-
               {testStatus === 'error' && (
-                <div className="test-alert error">
+                <div className="test-result error">
                   <AlertCircle size={16} />
                   <span>{testResult}</span>
                 </div>
               )}
             </div>
-
-            {availableModels.length > 0 && (
-              <div className="detected-models-strip">
-                <span>Detected Models: </span>
-                {availableModels.map((m, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className="model-tag-pill"
-                    onClick={() => setOllamaModel(m)}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
-        <div className="ai-settings-footer">
+        {/* ================= GEMINI API CONFIGURATION FIELDS ================= */}
+        {provider === AI_PROVIDERS.GEMINI_API && (
+          <div className="config-fields-panel">
+            <h4>Configuración de Google Gemini API</h4>
+            <div className="form-group">
+              <label htmlFor="gemini-key">Clave de API de Google Gemini (AI Studio):</label>
+              <input
+                id="gemini-key"
+                type="password"
+                value={geminiApiKey}
+                onChange={(e) => setGeminiApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="input-text"
+              />
+              <span className="field-hint">
+                Tu clave se guarda únicamente en el localStorage de tu navegador.
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="modal-actions-footer">
           <button type="button" className="btn-secondary" onClick={onClose}>
-            Cancel
+            Cancelar
           </button>
           <button type="button" className="btn-primary-altar" onClick={handleSave}>
-            Apply Settings
+            Guardar Configuración
           </button>
         </div>
       </div>
