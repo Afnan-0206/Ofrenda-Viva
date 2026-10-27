@@ -1,0 +1,49 @@
+# Thinking Machines Tinker Fine-Tuning Specification
+# Project: Ofrenda Viva - Authentic Mexican Calaveritas & Funerary Verse
+# Base Model: Google Gemma 2 2B (google/gemma-2-2b-it)
+
+task:
+  name: "mexican-calaveritas-octosyllabic-verse"
+  domain: "cultural-poetics-and-funerary-satire"
+  description: "Fine-tune Gemma 2 2B on strict Spanish octosyllabic meter (8 syllables), consonant rhyme, and Mexican folkloric motifs."
+
+model:
+  base_model: "google/gemma-2-2b-it"
+  framework: "tinker-lora-v2"
+  quantization: "bfloat16"
+
+dataset:
+  train_file: "tinker/dataset/calaveritas_train.jsonl"
+  format: "instruction_input_output"
+  validation_split: 0.15
+  max_seq_length: 512
+
+training_parameters:
+  epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  optimizer: "adamw_torch"
+  lr_scheduler: "cosine"
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+
+lora_parameters:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  bias: "none"
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+output:
+  export_formats:
+    - "gguf-q4_k_m"  # For local edge serving via Ollama / Android UNO Q
+    - "safetensors"
+  registry_name: "ofrenda-viva/gemma-2-2b-calaveritas-tinker"
