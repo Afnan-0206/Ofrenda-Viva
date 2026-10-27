@@ -11,8 +11,11 @@ import AiSettingsModal from './components/AiSettingsModal';
 import CultureGuideModal from './components/CultureGuideModal';
 import ExportArchiveModal from './components/ExportArchiveModal';
 import ShortcutsModal from './components/ShortcutsModal';
+import TabPfnModal from './components/TabPfnModal';
+import ArduinoModal from './components/ArduinoModal';
 import { INITIAL_ANCESTORS, INITIAL_OFFERINGS } from './utils/initialData';
-import { playMatchStrikeSound, playExtinguishSound, toggleAmbientSound } from './utils/audioSynth';
+import { playMatchStrikeSound, playExtinguishSound, toggleAmbientSound, playSpanishGuitarArpeggio } from './utils/audioSynth';
+import { arduinoBridge } from './utils/arduinoSerial';
 import { translations } from './utils/translations';
 import confetti from 'canvas-confetti';
 import './App.css';
@@ -69,6 +72,30 @@ export default function App() {
   const [isCultureGuideOpen, setIsCultureGuideOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isTabPfnOpen, setIsTabPfnOpen] = useState(false);
+  const [isArduinoOpen, setIsArduinoOpen] = useState(false);
+  const [arduinoConnected, setArduinoConnected] = useState(false);
+
+  // Subscribe to Arduino UNO Q WebSerial events
+  useEffect(() => {
+    const unsubscribe = arduinoBridge.subscribe((event) => {
+      if (event.type === 'connection') {
+        setArduinoConnected(event.status === 'connected' || event.status === 'simulated');
+      } else if (event.type === 'telemetry') {
+        const d = event.data;
+        if (d.event === 'flame_detected') {
+          setAltarVigilLit(true);
+          setAncestors((prev) => prev.map((a) => ({ ...a, candleLit: true })));
+          playMatchStrikeSound();
+          showToast(lang === 'es' ? '¡Llama física detectada por Arduino UNO Q! Velas encendidas.' : 'Physical flame detected on Arduino UNO Q! Altar lit.');
+        } else if (d.event === 'presence_detected') {
+          playSpanishGuitarArpeggio();
+          showToast(lang === 'es' ? 'Presencia detectada junto al altar por Arduino UNO Q.' : 'Presence detected at the physical shrine by Arduino UNO Q.');
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [lang]);
 
   // Show auto-dismissing toast
   const showToast = (msg) => {
@@ -286,6 +313,9 @@ export default function App() {
         onOpenCultureGuide={() => setIsCultureGuideOpen(true)}
         onOpenExport={() => setIsExportOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onOpenTabPfn={() => setIsTabPfnOpen(true)}
+        onOpenArduino={() => setIsArduinoOpen(true)}
+        arduinoConnected={arduinoConnected}
       />
 
       {/* Main Altar Area */}
@@ -369,6 +399,31 @@ export default function App() {
         isOpen={isShortcutsOpen}
         onClose={() => setIsShortcutsOpen(false)}
         lang={lang}
+      />
+
+      <TabPfnModal
+        isOpen={isTabPfnOpen}
+        onClose={() => setIsTabPfnOpen(false)}
+        ancestors={ancestors}
+        onAddAncestorFromTabPfn={(newAncestor) => {
+          handleAddAncestor(newAncestor);
+          showToast(lang === 'es' ? 'Antepasado añadido desde TabPFN-3.5 al altar' : 'Ancestor added from TabPFN-3.5');
+        }}
+        lang={lang}
+      />
+
+      <ArduinoModal
+        isOpen={isArduinoOpen}
+        onClose={() => setIsArduinoOpen(false)}
+        allCandlesLit={allCandlesLit}
+        onFlameDetected={() => {
+          setAltarVigilLit(true);
+          setAncestors((prev) => prev.map((a) => ({ ...a, candleLit: true })));
+          playMatchStrikeSound();
+        }}
+        onPresenceDetected={() => {
+          playSpanishGuitarArpeggio();
+        }}
       />
     </div>
   );

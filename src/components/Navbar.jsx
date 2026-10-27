@@ -12,7 +12,9 @@ import {
   Sparkles,
   Flower2,
   Keyboard,
-  Languages
+  Languages,
+  Table,
+  Radio
 } from 'lucide-react';
 import { toggleAmbientSound } from '../utils/audioSynth';
 import { translations } from '../utils/translations';
@@ -34,7 +36,10 @@ export default function Navbar({
   onOpenAiSettings,
   onOpenCultureGuide,
   onOpenExport,
-  onOpenShortcuts
+  onOpenShortcuts,
+  onOpenTabPfn,
+  onOpenArduino,
+  arduinoConnected = false
 }) {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const t = translations[lang] || translations.es;
@@ -149,12 +154,37 @@ export default function Navbar({
           <span className="nav-btn-text">{t.shortcuts}</span>
         </button>
 
+        {/* TabPFN Ancestral Heritage AI (Prior Labs) */}
+        <button
+          type="button"
+          className="nav-btn tabpfn-nav-pill"
+          onClick={onOpenTabPfn}
+          title="Prior Labs TabPFN-3.5: Pronóstico Demográfico & Detección de Anomalías"
+          aria-label="TabPFN Heritage AI"
+        >
+          <Table size={16} />
+          <span className="nav-btn-text">TabPFN-3.5</span>
+        </button>
+
+        {/* Arduino UNO Q IoT Physical Altar Agent */}
+        <button
+          type="button"
+          className={`nav-btn arduino-nav-pill ${arduinoConnected ? 'is-connected' : ''}`}
+          onClick={onOpenArduino}
+          title="Arduino UNO Q: Enlace Físico con Sensores de Llama y Presencia"
+          aria-label="Arduino UNO Q Hardware"
+        >
+          <Radio size={16} className={arduinoConnected ? 'pulse-radio' : ''} />
+          <span className="nav-btn-text">Arduino UNO Q</span>
+          <span className={`status-dot-mini ${arduinoConnected ? 'active' : ''}`}></span>
+        </button>
+
         {/* Open AI Engine Status / Settings */}
         <button
           type="button"
           className="nav-btn ai-status-pill"
           onClick={onOpenAiSettings}
-          title="Configuración de IA Abierta (Gemma 2 / Ollama)"
+          title="Configuración de IA Abierta (Tinker / Gemma 2 / Ollama)"
           aria-label="AI Engine Settings"
         >
           <Cpu size={17} className="ai-icon-pulse" />
