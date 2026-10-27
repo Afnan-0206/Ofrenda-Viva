@@ -58,6 +58,7 @@ The complete source code is available under the MIT License:
 - **Styling**: Pure Vanilla CSS design tokens with authentic carved wood grain, scalloped cream lace runners, and chiaroscuro candlelight blending
 - **Audio Physics**: Web Audio API Karplus-Strong physical string synthesis and procedural room soundscape
 - **AI Core**: Google Gemma 2 via local Ollama, Google Gemini API, and 100% offline traditional Folkloric Verse Bard
+- **Edge Deployment**: Cloudflare Pages with preconfigured SPA rewrites (`_redirects`), security headers (`_headers`), and `wrangler.toml`
 
 ---
 

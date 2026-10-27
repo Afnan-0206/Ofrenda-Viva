@@ -108,6 +108,36 @@ The optimized bundle will be generated in `dist/`.
 
 ---
 
+## ⚡ Deployment to Cloudflare Pages
+
+This project is fully configured for instantaneous, zero-config deployment on **Cloudflare Pages**:
+
+### Option A: Via Cloudflare Dashboard (Automatic Git CI/CD)
+1. Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/) &rarr; **Compute (Workers & Pages)** &rarr; **Create application** &rarr; **Pages** &rarr; **Connect to Git**.
+2. Select your repository: `Afnan-0206/Ofrenda-Viva`.
+3. Configure the build settings:
+   - **Framework preset**: `Vite`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+   - **Node.js version**: `20` (configured via `.node-version`)
+4. Click **Save and Deploy**. Cloudflare Pages will serve your ofrenda globally on its ultra-fast edge network with automatic SSL!
+
+### Option B: Via Wrangler CLI (Direct Deploy)
+```bash
+# Build the production bundle
+npm run build
+
+# Deploy directly using Wrangler
+npx wrangler pages deploy dist --project-name=ofrenda-viva
+```
+
+> **Included Cloudflare Optimizations**:
+> - `public/_redirects`: Client-side single-page app (SPA) fallback routing.
+> - `public/_headers`: Security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Permissions-Policy`) and immutable caching for static assets.
+> - `wrangler.toml` & `.node-version`: Preconfigured Pages runtime environments.
+
+---
+
 ## 🎨 Cultural Guide & The Three Deaths
 Mexican tradition teaches that every person experiences three deaths:
 1. *The first death* is when the physical body ceases to breathe.
