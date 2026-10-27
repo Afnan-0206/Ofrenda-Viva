@@ -86,7 +86,8 @@ export default function ShortcutsModal({ isOpen, onClose, lang = 'es' }) {
         </div>
 
         <div className="shortcuts-footer-hint">
-          <span>🕯️ {isEs ? 'Consejo: Puedes hacer clic directamente en las velas para encenderlas individualmente con sonido procedural de cerillo.' : 'Tip: You can click directly on any candle to light it individually with procedural match audio.'}</span>
+          <Flame size={15} className="hint-flame" />
+          <span>{isEs ? 'Consejo: Puedes hacer clic directamente en las velas para encenderlas individualmente con sonido procedural de cerillo.' : 'Tip: You can click directly on any candle to light it individually with procedural match audio.'}</span>
         </div>
       </div>
     </div>

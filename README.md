@@ -6,69 +6,64 @@
 [![Inference: 100% Local & Private](https://img.shields.io/badge/Privacy-100%25_Local_on_Device-4ade80.svg)](#why-open-innovation-matters)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An interactive, candlelit 3D virtual ofrenda honoring departed ancestors and luminaries in the sacred spirit of **Día de los Muertos** (Day of the Dead) and **Halloween**. Powered by 100% private, local open-source AI (**Google Gemma 2** and Ollama) for composing authentic *Calaveritas Literarias*, poetic elegies, oral history archives, and spiritual dialogue.
+An authentic, candlelit digital ofrenda and sanctuary honoring departed ancestors, family members, faithful companion pets, and historical luminaries in the sacred spirit of **Día de los Muertos** (Day of the Dead) and **Halloween**. Powered by open-source AI (**Google Gemma 2** via local Ollama and an offline Folkloric Verse Bard) for composing authentic *Calaveritas Literarias*, poetic elegies, oral history archives, and spiritual dialogue.
 
 ---
 
 ## 🌟 What is Ofrenda Viva?
 
-In Mexican and Mesoamerican tradition, Día de los Muertos (November 1 & 2) is not a mournful time, but a vibrant family reunion bridging the thin veil between the living and the dead. 
+In Mexican and Mesoamerican tradition, Día de los Muertos (November 1 & 2) is not a mournful time or a spooky holiday, but a vibrant family reunion bridging the veil between the living and the dead. 
 
-**Ofrenda Viva** is an atmospheric digital altar that preserves family memories, honors our lineage, and brings the "Ghost in the Machine" to life through open-source AI:
+**Ofrenda Viva** is an atmospheric digital altar that preserves family memories with handcrafted folk-art realism, tactile physical audio, and honest open-source intelligence:
 
 1. **The Three Sacred Tiers (La Ofrenda de Tres Niveles)**:
-   - **Nivel III: El Cielo (The Heavens & Guiding Spirits)** — Sheltered beneath the golden arch of marigolds (*Arco de Cempasúchil*), anchored by the Central Eternal Flame (*Llama Eterna*) and computing pioneer **Ada Lovelace** ("The Enchantress of Numbers" — the first ghost in our code).
-   - **Nivel II: La Tierra (The Earth & Cherished Loved Ones)** — Baroque gold-framed portraits of beloved family members (**Abuela Elena**, **Tío Carlos**, and your own ancestors) with dedicated individual vigil candles.
-   - **Nivel I: El Inframundo (The Roots & Purification)** — The essential welcoming elements: *Pan de Muerto* (sweetness of life), *Calaveras de Azúcar* (sugar skulls), *Vaso de Agua* (quenches the traveling soul's thirst), *Plato de Sal* (spiritual purification), and *Copal & Sahumador* (sacred incense guiding prayers upward with animated smoke).
-   - **El Camino Dorado de Cempasúchil** — A glowing path of marigold petals guiding spirits across the threshold.
+   - **Nivel III: El Cielo (The Heavens & Guiding Spirits)** — Sheltered beneath a botanical arch of Mexican marigolds (*Arco de Cempasúchil*), anchored by the Central Eternal Flame (*Llama Eterna*) and computing pioneer **Ada Lovelace** ("The Enchantress of Numbers" — the first ghost in our code).
+   - **Nivel II: La Tierra (The Earth & Cherished Loved Ones)** — Antique carved walnut and gold-leaf framed portraits of beloved family members (**Abuela Elena**, **Tío Carlos**, and your own ancestors) draped with traditional scalloped cream lace (*mantel de encaje calado*) and dedicated vigil candles.
+   - **Nivel I: El Inframundo (The Roots & Purification)** — Essential ceremonial elements rendered as handcrafted Mexican folk-art vector illustrations (no generic smartphone emojis): *Pan de Muerto* (with crossed bone crusts and crystalline sugar), *Calaveras de Azúcar* (sugar skulls with royal icing piping), *Vaso de Agua* (clear spring water for thirsty travelers), *Plato de Sal* (mineral salt for spiritual purification), and *Copal & Sahumador* (clay chalice with glowing embers and wafting incense smoke).
+   - **El Camino Dorado de Cempasúchil** — A scattered floor path of golden marigold petals guiding spirits across the threshold.
 
-2. **"El Guardián del Recuerdo" (Open-Source AI Chronicler)**:
-   - **Calaverita Literaria**: Crafts traditional, witty octosyllabic verse celebrating the ancestor's humor, favorite dishes, and affectionate encounters with *La Catrina*.
-   - **Poetic Elegy**: Composes reverent bilingual eulogies and tributes.
-   - **Oral History Chronicler**: Weaves favorite dishes, melodies, and quirks into enduring family lore.
-   - **Spirit Dialogue**: Allows users to ask their loved ones heartfelt questions and receive warm, comforting answers in their voice.
+2. **"El Guardián del Recuerdo" (Cultural AI Chronicler & Verse Bard)**:
+   - **Calaverita Literaria**: Crafts authentic octosyllabic rhyming verse celebrating the ancestor's humor, favorite dishes, and affectionate encounters with *La Catrina*.
+   - **Poetic Elegy**: Composes reverent bilingual eulogies honoring their enduring light.
+   - **Oral History Chronicler**: Weaves favorite dishes, melodies, and personal philosophies into enduring family lore.
+   - **Spirit Dialogue**: Allows visitors to ask heartfelt questions and receive warm, comforting answers in their ancestor's voice.
 
-3. **Atmospheric Physics & Sound (Zero External Assets)**:
-   - **Interactive Candle Physics**: Every candle on the altar can be lit or extinguished. The ambient lighting of the entire room dynamically warms and glows based on the number of active flames.
-   - **Procedural Web Audio Synthesizer**: Realistic match strikes, flame ignitions, bell chimes, and nocturnal Spanish flamenco guitar arpeggios synthesized directly in code (no MP3 downloads or network requests required).
-   - **Wind & Marigold Petal Physics**: HTML5 Canvas particle system of golden *pétalos de cempasúchil* dancing across the screen and swirling with mouse breezes.
-   - **Papel Picado Banners**: Swaying tissue paper bunting with traditional skull and floral cutouts.
-   - **Day & Night Mode (Noche de Velas)**: Switch between golden twilight and deep starry midnight.
+3. **Acoustic Physical Modeling & Soundscape (Zero Audio Downloads)**:
+   - **Karplus-Strong Plucked String Synthesis**: Spanish acoustic nylon guitar fingerpicked arpeggios physically modeled through noise-excitation delay lines and cedar soundboard resonance (Andalusian / Phrygian cadence in D minor).
+   - **Realistic Match & Candle Physics**: Wood-and-sulfur scrape friction followed by flame ignition catch; soft breath extinguish sound.
+   - **Nocturnal Room Ambience**: Faint autumn courtyard breeze and gentle harmonic altar bell chimes.
+   - **Wind & Marigold Petal Physics**: HTML5 Canvas particle system of velvety *pétalos de cempasúchil* dancing across the screen and swirling with mouse movement.
+   - **Papel Picado Banners**: Swaying tissue paper bunting with traditional chisel cutouts.
+   - **Day & Night Mode (Noche de Velas)**: Switch between daylight and deep starry midnight with dynamic candlelight warmth.
 
 4. **Delightful Usability & Effortless Exploration**:
    - **Bilingual Switcher (ES / EN)**: Instant one-click toggle between authentic Spanish and English across the entire interface.
-   - **Instant Search & Category Filter Bar**: Filter ancestors by Pioneers (Nivel III), Family (Nivel II), Companion Pets 🐾, or Active Vigils 🕯️, with real-time text search.
+   - **Instant Search & Category Filter Bar**: Filter ancestors by Pioneers (Nivel III), Family (Nivel II), Companion Pets 🐾, or Active Vigils 🕯️, with real-time text search (`[/]` shortcut).
    - **Keyboard Navigation & Gestures**:
      - `[Space]` — Scatter golden marigold petals (*Lluvia de Cempasúchil*).
      - `[C]` — Toggle ignite/extinguish all altar candles.
-     - `[M]` — Toggle ambient nylon flamenco guitar music.
+     - `[M]` — Toggle ambient acoustic flamenco guitar music.
      - `[A]` — Quick add a loved one or pet to the altar.
      - `[/]` — Focus instant search filter.
      - `[?]` — Open Keyboard Shortcuts guidance dialog.
      - `[Esc]` — Instantly dismiss any open modal.
-   - **Sticky Modal Ergonomics**: Floating frosted-glass close buttons and prompt suggestion chips make spirit dialogues effortless.
-   - **Tribute Flowers (Ofrendar Flor 🌼)**: Leave floral tributes with musical chimes and festive marigold confetti bursts.
-
-5. **Permanent Offline Archive (Sovereignty Over Memory)**:
-   - Export your family's ofrenda to an open, portable JSON archive or print a physical memorial display card.
+   - **Permanent Offline Archive**: Export your family's ofrenda to an open, portable JSON archive or print a physical memorial display card.
 
 ---
 
 ## 🧠 How It's Built & Why Open Innovation Matters
 
-### 1. Which Open-Source AI is Used?
-- **Model**: **Google Gemma 2** (open weights, available in 2B and 9B parameter variants).
-- **Local Inference Options**:
-  - **Zero-Latency In-Browser Neural Engine**: Prompt-engineered token synthesis based on Gemma 2 open instruction patterns that executes immediately on any device with zero setup.
-  - **Local Ollama Gateway**: Direct integration with `http://localhost:11434` for running local quantized Gemma 2 models (`gemma2:2b`, `gemma2:9b`, `llama3.2`) on your own GPU/CPU.
-  - **Zero Third-Party Cloud APIs**: No data is sent to OpenAI, Anthropic, or proprietary cloud providers.
+### 1. Which AI Engines are Supported?
+- **Local Ollama Runtime**: Native integration with `http://localhost:11434` running open-weight **Google Gemma 2** (`gemma2:2b`, `gemma2:9b`), Llama 3.2, or Mistral directly on your GPU/CPU with streaming response.
+- **Google Gemini API**: Direct in-browser connection via user-provided Google AI Studio API key for zero-install live cloud generation.
+- **Traditional Folkloric Verse & Lore Bard**: 100% offline archival verse composer based on traditional Mexican poetic meters (*cuartetas octosílabas*, *décimas*, and *coplas*) that executes immediately on any device with zero configuration.
 
 ### 2. Why Open Innovation Matters for Ofrenda Viva
-In the challenge post, we are asked:
+In the challenge prompt, developers are asked:
 > *"Tell us where your open-based approach worked better than a closed one. Does it keep someone's data off a server they don't control? Let you fine-tune or swap models? Cost nothing to run?"*
 
-For a memorial altar, **open-source AI is not just a technical choice; it is an ethical imperative**:
-- **Sovereignty Over Grief**: Personal grief, intimate family photographs, voice recordings, and memories of deceased grandparents are sacred. Closed corporate APIs log user prompts on remote servers, retain telemetry, and could train commercial advertising models on your personal sadness. Running Gemma 2 locally ensures **100% privacy on your own laptop**.
+For a memorial altar, **open-source AI is an ethical imperative**:
+- **Sovereignty Over Grief**: Personal grief, intimate family photographs, and memories of deceased grandparents are sacred. Closed corporate APIs log user prompts on remote servers, retain telemetry, and could train commercial advertising models on personal grief. Running open weights locally ensures **100% privacy on your own device**.
 - **Runs with the Lights (and the Internet) Off**: A traditional ofrenda is visited late at night by candlelight. If an autumn storm knocks out power and internet connectivity, **Ofrenda Viva continues to run flawlessly completely offline**.
 - **Permanent Longevity (Immunity to Corporate Obsolescence)**: Closed APIs deprecate endpoints, raise subscription prices, or shut down when startups run out of runway. Because Gemma 2 and our codebase are completely open, your grandchildren can run this ofrenda 50 years from now from a single USB drive.
 - **Cultural Authenticity**: Open weights allow local bilingual synthesis in Spanish, English, and traditional regional folk styles (*Calaveritas Literarias*) without arbitrary corporate censorship.
@@ -88,14 +83,14 @@ This project is entered into:
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ (tested on Node v24)
+- Node.js 18+ (tested on Node v20/v24)
 - (Optional) [Ollama](https://ollama.com/) if you wish to run local Ollama models (`ollama run gemma2:2b`).
 
 ### Installation & Local Run
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/ofrenda-viva.git
-cd ofrenda-viva
+git clone https://github.com/Afnan-0206/Ofrenda-Viva.git
+cd Ofrenda-Viva
 
 # Install dependencies
 npm install
@@ -103,7 +98,7 @@ npm install
 # Start local development server
 npm run dev
 ```
-Open `http://localhost:5180/` in your browser.
+Open `http://localhost:5173/` in your browser.
 
 ### Build for Production
 ```bash

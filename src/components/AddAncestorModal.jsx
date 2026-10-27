@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, Upload, Sparkles, Wand2 } from 'lucide-react';
+import { X, Upload, Sparkles, Wand2, Flame } from 'lucide-react';
 import { generateRemembrance } from '../utils/aiEngine';
 import { ANCESTOR_PRESETS } from '../utils/initialData';
+import { MiniMarigold } from './CempasuchilDecorations';
 
 /**
  * AddAncestorModal — Place a new beloved person, pet, or luminary onto the altar.
@@ -96,16 +97,18 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label="Cerrar diálogo"
         >
           <X size={20} />
         </button>
 
         <div className="add-header">
-          <span className="add-header-icon">🕯️</span>
-          <h2>Colocar en el Altar (Add Loved One)</h2>
+          <div className="add-header-icon-wrap">
+            <MiniMarigold size={36} color="#ff8c00" />
+          </div>
+          <h2>Colocar en el Altar de Muertos</h2>
           <p className="add-subtitle">
-            Honor a departed family member, faithful companion pet, or inspiring luminary.
+            Honra a un ser querido, familiar, fiel mascota o guía espiritual.
           </p>
         </div>
 

@@ -85,7 +85,7 @@ export default function App() {
     try {
       localStorage.setItem('ofrenda_lang_v1', nextLang);
     } catch {}
-    showToast(nextLang === 'es' ? '🇲🇽 Idioma cambiado a Español' : '🌐 Language switched to English');
+    showToast(nextLang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English');
   };
 
   // Save changes to localStorage
@@ -113,10 +113,10 @@ export default function App() {
     const targetState = !allCandlesLit;
     if (targetState) {
       playMatchStrikeSound();
-      showToast(lang === 'es' ? '🕯️ ¡Todas las velas del altar han sido encendidas!' : '🕯️ All altar vigil candles illuminated!');
+      showToast(lang === 'es' ? 'Todas las velas del altar han sido encendidas' : 'All altar vigil candles illuminated');
     } else {
       playExtinguishSound();
-      showToast(lang === 'es' ? '💨 Velas apagadas suavemente.' : '💨 All vigil candles extinguished.');
+      showToast(lang === 'es' ? 'Velas apagadas en paz' : 'All vigil candles extinguished');
     }
     setAltarVigilLit(targetState);
     setAncestors((prev) => prev.map((a) => ({ ...a, candleLit: targetState })));
@@ -126,12 +126,12 @@ export default function App() {
   const handleScatterPetals = () => {
     try {
       confetti({
-        particleCount: 55,
-        spread: 85,
+        particleCount: 45,
+        spread: 80,
         origin: { y: 0.65 },
-        colors: ['#ff8c00', '#ffa500', '#ffb703', '#ffd166', '#e63946', '#f72585']
+        colors: ['#ff8c00', '#ffa500', '#ffb703', '#ffd166', '#d97706']
       });
-      showToast(lang === 'es' ? '🌼 ¡Lluvia de pétalos de cempasúchil!' : '🌼 Golden marigold petal shower!');
+      showToast(lang === 'es' ? 'Lluvia de pétalos de cempasúchil esparcida' : 'Marigold petal shower scattered');
     } catch (e) {
       // Confetti fallback
     }

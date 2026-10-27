@@ -86,10 +86,12 @@ export default function ExportArchiveModal({
         </button>
 
         <div className="export-header">
-          <span className="export-header-icon">📜</span>
-          <h2>Archive & Permanent Preservation</h2>
+          <div className="export-header-icon-wrap">
+            <FileText size={32} className="export-header-file-icon" />
+          </div>
+          <h2>Archivado y Preservación Permanente</h2>
           <p className="export-subtitle">
-            Keep your family's ofrenda safe forever on your personal storage. No cloud accounts, zero subscription locks.
+            Conserva el altar de tu familia seguro en tu almacenamiento personal. Sin cuentas en la nube ni bloqueos comerciales.
           </p>
         </div>
 
