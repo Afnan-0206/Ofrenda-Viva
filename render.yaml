@@ -1,0 +1,51 @@
+services:
+  # 1. Frontend Static Web Application
+  - type: web
+    name: ofrenda-viva-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_AI_RUNTIME_URL
+        fromService:
+          type: web
+          name: ofrenda-viva-ai-runtime
+          property: host
+
+  # 2. AI Runtime Web Service (TabPFN-3.5 & Gemma 2 Bridge)
+  - type: web
+    name: ofrenda-viva-ai-runtime
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: TABPFN_MODEL
+        value: tabpfn-v3.5-regressor-thinking
+      - key: OLLAMA_HOST
+        value: http://localhost:11434
+
+  # 3. Hermes Autonomous Memory Background Agent
+  - type: worker
+    name: ofrenda-hermes-agent
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python -c "import time; print('Hermes Autonomous Ancestral Memory Agent Active on Render'); [time.sleep(60) for _ in iter(int, 1)]"
+    plan: starter
+    envVars:
+      - key: AGENT_ROLE
+        value: hermes_ancestral_archivist

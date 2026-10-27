@@ -1,0 +1,41 @@
+name: ofrenda-viva
+region: nyc
+services:
+  # 1. AI Runtime Service (FastAPI + TabPFN-3.5 + Gemma 2)
+  - name: ai-runtime
+    environment_slug: python
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: Afnan-0206/Ofrenda-Viva
+    build_command: pip install -r backend/requirements.txt
+    run_command: uvicorn backend.main:app --host 0.0.0.0 --port 8080
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 15
+      period_seconds: 10
+    envs:
+      - key: TABPFN_MODEL
+        value: tabpfn-v3.5-regressor-thinking
+      - key: OLLAMA_HOST
+        value: http://localhost:11434
+
+static_sites:
+  # 2. Frontend React / Vite Static Site
+  - name: frontend
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: Afnan-0206/Ofrenda-Viva
+    build_command: npm install && npm run build
+    output_dir: dist
+    routes:
+      - path: /
+    catchall_document: index.html
+    envs:
+      - key: VITE_AI_RUNTIME_URL
+        scope: RUN_TIME
+        value: ${ai-runtime.PUBLIC_URL}

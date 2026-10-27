@@ -1,0 +1,29 @@
+# DigitalOcean Gradient AI Platform - Agent Deployment Spec
+# Project: Ofrenda Viva Ancestral Archivist Agent
+
+agent:
+  name: "ofrenda-viva-gradient-archivist"
+  framework: "gradient-agent-runtime-v1"
+  description: "Autonomous agent synthesizing Mexican ancestral memorials, historical parish records, and funerary calaveritas."
+  
+model:
+  foundation_model: "gemma-2-9b-it"
+  provider: "digitalocean-gradient"
+  parameters:
+    temperature: 0.65
+    top_p: 0.92
+    max_output_tokens: 600
+
+tools:
+  - name: "tabpfn_anomaly_spotter"
+    description: "Evaluates historical census records against Prior Labs TabPFN-3.5 to spot epidemic spikes."
+    endpoint: "https://ofrenda-viva-backend.ondigitalocean.app/api/tabpfn/anomalies"
+  
+  - name: "arduino_uno_q_telemetry"
+    description: "Queries physical candle flame and presence sensors from Arduino UNO Q."
+    endpoint: "https://ofrenda-viva-backend.ondigitalocean.app/api/arduino/telemetry"
+
+memory:
+  type: "vector_and_tabular"
+  retention_days: 365
+  storage_backend: "digitalocean-spaces"
