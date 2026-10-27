@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Plus, Sparkles } from 'lucide-react';
+import AltarArtwork from './AltarArtwork';
 
 /**
  * AddOfferingModal — Place a custom offering or favorite artifact on the altar.
@@ -17,23 +18,19 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
   if (!isOpen) return null;
 
   const [name, setName] = useState('');
-  const [icon, setIcon] = useState('🥖');
+  const [artType, setArtType] = useState('pan');
   const [meaning, setMeaning] = useState('');
   const [tier, setTier] = useState(1);
 
-  const presetIcons = [
-    { emoji: '🥖', label: 'Pan de Muerto' },
-    { emoji: '💀', label: 'Calavera' },
-    { emoji: '🌼', label: 'Cempasúchil' },
-    { emoji: '☕', label: 'Café / Chocolate' },
-    { emoji: '🍷', label: 'Vino / Mezcal' },
-    { emoji: '🎸', label: 'Guitarra' },
-    { emoji: '📚', label: 'Libro' },
-    { emoji: '✉️', label: 'Carta' },
-    { emoji: '🎨', label: 'Pincel / Arte' },
-    { emoji: '🍎', label: 'Fruta' },
-    { emoji: '🕯️', label: 'Veladora' },
-    { emoji: '✨', label: 'Milagro' }
+  const presetOfferings = [
+    { type: 'pan', label: 'Pan de Muerto' },
+    { type: 'calavera', label: 'Calavera de Azúcar' },
+    { type: 'cempasuchil', label: 'Cempasúchil' },
+    { type: 'chocolate', label: 'Chocolate / Café' },
+    { type: 'copal', label: 'Copal & Sahumador' },
+    { type: 'agua', label: 'Vaso de Agua' },
+    { type: 'sal', label: 'Plato de Sal' },
+    { type: 'guitarra', label: 'Guitarra & Música' }
   ];
 
   const handleSubmit = (e) => {
@@ -43,12 +40,17 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
     onAddOffering({
       id: `offering-${Date.now()}`,
       name: name.trim(),
-      icon: icon || '✨',
-      meaning: meaning.trim() || 'An offering placed with deep love and memory on the altar.',
+      icon: '🌼',
+      meaning: meaning.trim() || 'Ofrenda colocada con devoción, respeto y cariño en este altar.',
       tier: Number(tier)
     });
 
     onClose();
+  };
+
+  const handleSelectPreset = (p) => {
+    setArtType(p.type);
+    if (!name) setName(p.label);
   };
 
   return (
@@ -58,89 +60,85 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label="Cerrar diálogo"
         >
           <X size={20} />
         </button>
 
         <div className="add-header">
-          <span className="add-header-icon">{icon}</span>
-          <h2>Añadir Ofrenda (Add Offering)</h2>
+          <div className="add-offering-art-preview">
+            <AltarArtwork name={artType} size={68} />
+          </div>
+          <h2>Colocar Ofrenda en el Altar</h2>
           <p className="add-subtitle">
-            Offer your loved ones their favorite dishes, personal tools, or heartfelt gifts.
+            Ofrece a tus seres queridos sus platillos predilectos, bebidas o elementos sagrados.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="add-offering-form">
           <div className="form-group">
-            <label htmlFor="offering-name">Offering Name / Nombre</label>
+            <label htmlFor="offering-name">Nombre de la Ofrenda o Platillo</label>
             <input
               id="offering-name"
               type="text"
               required
-              placeholder="e.g. Pan de Elote, Café de Olla, Vintage Camera..."
+              placeholder="Ej. Tamales de rajas, Café de olla con canela, Dulce de calabaza..."
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="input-text"
             />
           </div>
 
           <div className="form-group">
-            <label>Icon / Símbolo</label>
-            <div className="icon-selector-grid">
-              {presetIcons.map((p, idx) => (
+            <label>Tipo de Arte Tradicional</label>
+            <div className="art-selector-grid">
+              {presetOfferings.map((p, idx) => (
                 <button
                   type="button"
                   key={idx}
-                  className={`icon-choice-btn ${icon === p.emoji ? 'is-selected' : ''}`}
-                  onClick={() => setIcon(p.emoji)}
+                  className={`art-choice-btn ${artType === p.type ? 'is-selected' : ''}`}
+                  onClick={() => handleSelectPreset(p)}
                   title={p.label}
                 >
-                  {p.emoji}
+                  <AltarArtwork name={p.type} size={36} />
+                  <span className="art-choice-label">{p.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group flex-1">
-              <label htmlFor="offering-tier">Altar Placement</label>
-              <select
-                id="offering-tier"
-                value={tier}
-                onChange={(e) => setTier(e.target.value)}
-              >
-                <option value={1}>Nivel I — Base (Essential Offerings)</option>
-                <option value={2}>Nivel II — Tierra (Personal Keepsakes)</option>
-              </select>
-            </div>
+          <div className="form-group">
+            <label htmlFor="offering-meaning">Significado o Memoria Especial</label>
+            <textarea
+              id="offering-meaning"
+              rows={3}
+              placeholder="¿Por qué es especial esta ofrenda para tu ser querido? (Ej. 'Le encantaba prepararlo los domingos para toda la familia...')"
+              value={meaning}
+              onChange={(e) => setMeaning(e.target.value)}
+              className="input-textarea"
+            />
           </div>
 
           <div className="form-group">
-            <label htmlFor="offering-meaning">Spiritual Meaning / Significado</label>
-            <textarea
-              id="offering-meaning"
-              rows={2}
-              placeholder="Why was this meaningful to them? (e.g. 'He drank hot coffee every morning while watching the birds...')"
-              value={meaning}
-              onChange={(e) => setMeaning(e.target.value)}
-            ></textarea>
+            <label htmlFor="offering-tier">Nivel del Altar</label>
+            <select
+              id="offering-tier"
+              value={tier}
+              onChange={(e) => setTier(e.target.value)}
+              className="input-select"
+            >
+              <option value={1}>Nivel I: El Inframundo (Purificación y Elementos Vitales)</option>
+              <option value={2}>Nivel II: La Tierra (Memorias Familiares y Platillos Favoritos)</option>
+            </select>
           </div>
 
-          <div className="add-modal-actions">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={onClose}
-            >
-              Cancel
+          <div className="modal-actions-footer">
+            <button type="button" className="btn-secondary" onClick={onClose}>
+              Cancelar
             </button>
-
-            <button
-              type="submit"
-              className="btn-primary-altar"
-            >
+            <button type="submit" className="btn-primary-altar">
               <Plus size={16} />
-              <span>Place on Altar</span>
+              <span>Colocar en el Altar</span>
             </button>
           </div>
         </form>

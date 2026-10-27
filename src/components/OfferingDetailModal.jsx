@@ -1,5 +1,6 @@
 import React from 'react';
-import { X, Sparkles, Heart } from 'lucide-react';
+import { X, Heart, Shield } from 'lucide-react';
+import AltarArtwork from './AltarArtwork';
 
 /**
  * OfferingDetailModal — Cultural insight into the spiritual purpose of each altar offering.
@@ -23,33 +24,35 @@ export default function OfferingDetailModal({ offering, isOpen, onClose }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label="Cerrar ventana"
         >
           <X size={20} />
         </button>
 
         <div className="offering-detail-header">
-          <span className="offering-detail-big-icon">{offering.icon}</span>
+          <div className="offering-detail-artwork-frame">
+            <AltarArtwork name={offering.name} type={offering.name} size={105} />
+          </div>
           <h2>{offering.name}</h2>
-          <span className="offering-tier-badge">Placed on Nivel {offering.tier || 1}</span>
+          <span className="offering-tier-badge">Colocado en el Nivel {offering.tier || 1}</span>
         </div>
 
         <div className="offering-meaning-box">
-          <h3>Spiritual Meaning & Symbolism:</h3>
+          <h3>Significado Espiritual y Simbolismo:</h3>
           <p>{offering.meaning}</p>
         </div>
 
         <div className="offering-cultural-note">
           <Heart size={16} className="note-heart" />
           <p>
-            In indigenous tradition, returning souls do not physically consume the offerings; they absorb their
-            spiritual essence (el aroma y la devoción) after traveling through Mictlán.
+            En la cosmovisión mesoamericana, las almas que nos visitan no consumen físicamente los alimentos;
+            se nutren de su esencia sutil (*el aroma y la devoción*) tras su largo viaje por el Mictlán.
           </p>
         </div>
 
         <div className="guide-footer">
           <button type="button" className="btn-primary-altar" onClick={onClose}>
-            Honored with Love
+            Honrado con Amor y Respeto
           </button>
         </div>
       </div>
