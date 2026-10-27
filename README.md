@@ -35,7 +35,21 @@ In Mexican and Mesoamerican tradition, Día de los Muertos (November 1 & 2) is n
    - **Papel Picado Banners**: Swaying tissue paper bunting with traditional skull and floral cutouts.
    - **Day & Night Mode (Noche de Velas)**: Switch between golden twilight and deep starry midnight.
 
-4. **Permanent Offline Archive (Sovereignty Over Memory)**:
+4. **Delightful Usability & Effortless Exploration**:
+   - **Bilingual Switcher (ES / EN)**: Instant one-click toggle between authentic Spanish and English across the entire interface.
+   - **Instant Search & Category Filter Bar**: Filter ancestors by Pioneers (Nivel III), Family (Nivel II), Companion Pets 🐾, or Active Vigils 🕯️, with real-time text search.
+   - **Keyboard Navigation & Gestures**:
+     - `[Space]` — Scatter golden marigold petals (*Lluvia de Cempasúchil*).
+     - `[C]` — Toggle ignite/extinguish all altar candles.
+     - `[M]` — Toggle ambient nylon flamenco guitar music.
+     - `[A]` — Quick add a loved one or pet to the altar.
+     - `[/]` — Focus instant search filter.
+     - `[?]` — Open Keyboard Shortcuts guidance dialog.
+     - `[Esc]` — Instantly dismiss any open modal.
+   - **Sticky Modal Ergonomics**: Floating frosted-glass close buttons and prompt suggestion chips make spirit dialogues effortless.
+   - **Tribute Flowers (Ofrendar Flor 🌼)**: Leave floral tributes with musical chimes and festive marigold confetti bursts.
+
+5. **Permanent Offline Archive (Sovereignty Over Memory)**:
    - Export your family's ofrenda to an open, portable JSON archive or print a physical memorial display card.
 
 ---
