@@ -1,0 +1,10 @@
+{
+  "device": "Arduino UNO Q",
+  "quantization": "INT8",
+  "original_size_kb": 412.5,
+  "quantized_size_kb": 89.2,
+  "size_reduction": "78.4%",
+  "npu_inference_latency_ms": 3.8,
+  "npu_power_draw_mw": 14.5,
+  "accuracy_retention": "99.1%"
+}

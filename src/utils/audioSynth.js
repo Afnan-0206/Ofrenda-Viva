@@ -304,3 +304,18 @@ export function toggleAmbientSound(onStateChange) {
 export function isAmbientActive() {
   return isAmbientPlaying;
 }
+
+/**
+ * Play a welcoming Spanish nylon string guitar arpeggio (used by Arduino presence & offering triggers)
+ */
+export function playSpanishGuitarArpeggio() {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // D minor / A major Andalusian arpeggio notes
+  const notes = [146.83, 220.0, 293.66, 349.23, 440.0];
+  notes.forEach((freq, idx) => {
+    playAcousticGuitarNote(ctx, freq, now + idx * 0.14, 0.18, ctx.destination);
+  });
+}
+
