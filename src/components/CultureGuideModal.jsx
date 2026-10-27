@@ -7,6 +7,15 @@ import { OFRENDA_CULTURE_INFO } from '../utils/initialData';
  * of Día de los Muertos, the 3 tiers of the altar, and why Open Innovation honors this spirit.
  */
 export default function CultureGuideModal({ isOpen, onClose }) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (

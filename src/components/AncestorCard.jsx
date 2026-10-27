@@ -1,12 +1,15 @@
 import React from 'react';
 import Candle from './Candle';
 import { Sparkles, BookOpen } from 'lucide-react';
+import { translations } from '../utils/translations';
 
 /**
  * AncestorCard — Ornate framed portrait on the altar tiers.
  * Features realistic gold filigree, marigolds, dedicated candle, and remembrance trigger.
  */
-export default function AncestorCard({ ancestor, onSelect, onToggleCandle }) {
+export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang = 'es' }) {
+  const t = translations[lang] || translations.es;
+
   return (
     <div
       className={`ancestor-card ${ancestor.candleLit ? 'is-vigil-active' : ''}`}
@@ -64,7 +67,7 @@ export default function AncestorCard({ ancestor, onSelect, onToggleCandle }) {
         {/* Action prompt footer */}
         <div className="card-action-hint">
           <BookOpen size={13} />
-          <span>View Memorial & Verse</span>
+          <span>{t.viewMemorial}</span>
         </div>
       </div>
 

@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
-import { X, Upload, Plus, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { X, Upload, Sparkles, Wand2 } from 'lucide-react';
 import { generateRemembrance } from '../utils/aiEngine';
+import { ANCESTOR_PRESETS } from '../utils/initialData';
 
 /**
- * AddAncestorModal — Dialog to place a new beloved person or luminary onto the altar.
+ * AddAncestorModal — Place a new beloved person, pet, or luminary onto the altar.
+ * Features instant archetype presets, custom photo uploads, and automatic open AI Calaveritas.
  */
 export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
+  // Global Esc key listener
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const [name, setName] = useState('');
@@ -18,14 +30,17 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Preset culturally evocative avatars
-  const avatarPresets = [
-    { label: 'Abuela', url: '/portrait_abuela.jpg' },
-    { label: 'Ada Lovelace', url: '/portrait_ada.jpg' },
-    { label: 'Elder Gentleman', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' },
-    { label: 'Cherished Elder', url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80' },
-    { label: 'Musical Soul', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80' }
-  ];
+  // Apply archetype preset
+  const handleApplyPreset = (preset) => {
+    setRelationship(preset.relation);
+    setStory(preset.story);
+    setFavoriteFoods(preset.foods);
+    setFavoriteMusic(preset.music);
+    setPhotoUrl(preset.photo);
+    if (!name) {
+      setName(preset.title.split(' ')[0]);
+    }
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
@@ -52,7 +67,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
       story: story.trim() || 'Recordado con amor y respeto en esta ofrenda.',
       favoriteFoods: favoriteFoods.trim() || 'Pan de muerto y flores',
       favoriteMusic: favoriteMusic.trim() || 'La música del viento',
-      photo: photoUrl || avatarPresets[0].url,
+      photo: photoUrl || '/portrait_abuela.jpg',
       tier: Number(tier),
       candleLit: true
     };
@@ -90,8 +105,28 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           <span className="add-header-icon">🕯️</span>
           <h2>Colocar en el Altar (Add Loved One)</h2>
           <p className="add-subtitle">
-            Bring the spirit of an ancestor, family member, or fallen luminary to your virtual ofrenda.
+            Honor a departed family member, faithful companion pet, or inspiring luminary.
           </p>
+        </div>
+
+        {/* Quick Presets Strip */}
+        <div className="quick-presets-box">
+          <div className="presets-box-title">
+            <Wand2 size={14} className="wand-icon" />
+            <span>Quick Presets (Click to autofill archetype):</span>
+          </div>
+          <div className="preset-buttons-row">
+            {ANCESTOR_PRESETS.map((p, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className="preset-chip-btn"
+                onClick={() => handleApplyPreset(p)}
+              >
+                {p.title}
+              </button>
+            ))}
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="add-ancestor-form">
@@ -103,7 +138,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
                 id="name-input"
                 type="text"
                 required
-                placeholder="e.g. Abuelito Manuel, Frida, Alan..."
+                placeholder="e.g. Abuelito Manuel, Luna, Frida..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -128,7 +163,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
               <input
                 id="relation-input"
                 type="text"
-                placeholder="e.g. Beloved Grandfather, Mentor, Sister..."
+                placeholder="e.g. Beloved Grandfather, Faithful Pet, Sister..."
                 value={relationship}
                 onChange={(e) => setRelationship(e.target.value)}
               />
@@ -141,8 +176,8 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
                 value={tier}
                 onChange={(e) => setTier(e.target.value)}
               >
-                <option value={2}>Nivel II — La Tierra (Family & Friends)</option>
-                <option value={3}>Nivel III — El Cielo (Guiding Souls)</option>
+                <option value={2}>Nivel II — La Tierra (Family, Pets & Friends)</option>
+                <option value={3}>Nivel III — El Cielo (Guiding Souls & Mentors)</option>
               </select>
             </div>
           </div>
@@ -171,23 +206,12 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
               />
             </div>
 
-            {/* Presets */}
-            <div className="avatar-presets-strip">
-              <span className="presets-label">Or pick an avatar:</span>
-              <div className="presets-list">
-                {avatarPresets.map((preset, idx) => (
-                  <button
-                    type="button"
-                    key={idx}
-                    className={`preset-thumb-btn ${photoUrl === preset.url ? 'is-selected' : ''}`}
-                    onClick={() => setPhotoUrl(preset.url)}
-                    title={preset.label}
-                  >
-                    <img src={preset.url} alt={preset.label} />
-                  </button>
-                ))}
+            {photoUrl && (
+              <div className="photo-preview-strip">
+                <span>Selected Photo:</span>
+                <img src={photoUrl} alt="Preview" className="preview-mini-thumb" />
               </div>
-            </div>
+            )}
           </div>
 
           {/* Row 4: Bio / Memories */}

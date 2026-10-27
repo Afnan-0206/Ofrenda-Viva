@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5180,
-    strictPort: true,
+    strictPort: false, // Automatically fallback to next available port if 5180 is busy
     host: true
   }
 });

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Candle from './Candle';
 import { generateRemembrance } from '../utils/aiEngine';
+import { playBellChime } from '../utils/audioSynth';
+import confetti from 'canvas-confetti';
 import {
   X,
   Sparkles,
@@ -12,7 +14,8 @@ import {
   Copy,
   Check,
   ShieldCheck,
-  Feather
+  Feather,
+  Flower2
 } from 'lucide-react';
 
 /**
@@ -26,6 +29,16 @@ export default function MemorialModal({
   onUpdateAncestor,
   onToggleCandle
 }) {
+  // Global Esc key listener
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !ancestor) return null;
 
   const [activeTab, setActiveTab] = useState('calaverita'); // 'calaverita' | 'elegy' | 'story' | 'dialogue'
@@ -35,14 +48,15 @@ export default function MemorialModal({
   const [generatedText, setGeneratedText] = useState(ancestor.calaverita || '');
   const [activeProviderName, setActiveProviderName] = useState('Gemma 2 Open Neural Engine');
   const [copied, setCopied] = useState(false);
+  const [flowerOffered, setFlowerOffered] = useState(false);
 
-  const handleGenerate = async (type = activeTab) => {
+  const handleGenerate = async (type = activeTab, customPrompt = dialogueQuery) => {
     setIsGenerating(true);
     try {
       const response = await generateRemembrance({
         ancestor,
         type,
-        userPrompt: dialogueQuery,
+        userPrompt: customPrompt,
         language
       });
       setGeneratedText(response.content);
@@ -68,15 +82,44 @@ export default function MemorialModal({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleOfferFlower = () => {
+    playBellChime();
+    setFlowerOffered(true);
+    try {
+      confetti({
+        particleCount: 30,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#ff8c00', '#ffd700', '#ff007f']
+      });
+    } catch {}
+    setTimeout(() => setFlowerOffered(false), 2500);
+  };
+
+  const dialogueSuggestions = language === 'en'
+    ? [
+        'What advice would you give me for my journey?',
+        'What was your greatest joy in life?',
+        'Do you remember when we shared meals together?',
+        'How do you feel about this ofrenda in your honor?'
+      ]
+    : [
+        '¿Qué consejo me das hoy para seguir adelante?',
+        '¿Cuál fue tu recuerdo más feliz en la vida?',
+        '¿Recuerdas cuando cocinábamos y reíamos juntos?',
+        '¿Cómo sientes este altar y ofrenda en tu honor?'
+      ];
+
   return (
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="modal-card memorial-modal-card" onClick={(e) => e.stopPropagation()}>
-        {/* Close Button */}
+        {/* Sticky Top Close Action */}
         <button
           type="button"
           className="modal-close-btn"
           onClick={onClose}
           aria-label="Close memorial dialog"
+          title="Close (Esc)"
         >
           <X size={20} />
         </button>
@@ -102,7 +145,18 @@ export default function MemorialModal({
           </div>
 
           <div className="memorial-titles">
-            <span className="memorial-tier-badge">Altar Nivel {ancestor.tier || 2}</span>
+            <div className="memorial-top-tags">
+              <span className="memorial-tier-badge">Altar Nivel {ancestor.tier || 2}</span>
+              <button
+                type="button"
+                className={`memorial-tribute-btn ${flowerOffered ? 'offered' : ''}`}
+                onClick={handleOfferFlower}
+                title="Leave an offering flower"
+              >
+                <Flower2 size={13} />
+                <span>{flowerOffered ? 'Ofrenda Entregada 🌼' : 'Ofrendar Flor 🌼'}</span>
+              </button>
+            </div>
             <h2 className="memorial-name">{ancestor.name}</h2>
             <p className="memorial-years">{ancestor.years}</p>
             <p className="memorial-relation">{ancestor.relationship}</p>
@@ -218,28 +272,50 @@ export default function MemorialModal({
             </button>
           </div>
 
-          {/* Dialogue Query Input (when dialogue tab is active) */}
+          {/* Dialogue Query Input & Instant Suggestions (when dialogue tab is active) */}
           {activeTab === 'dialogue' && (
-            <div className="dialogue-input-box">
-              <input
-                type="text"
-                placeholder={`Ask ${ancestor.name} a question (e.g., "What advice do you give me today?")...`}
-                value={dialogueQuery}
-                onChange={(e) => setDialogueQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleGenerate('dialogue');
-                }}
-                className="dialogue-input"
-              />
-              <button
-                type="button"
-                className="dialogue-send-btn"
-                onClick={() => handleGenerate('dialogue')}
-                disabled={isGenerating}
-              >
-                <Sparkles size={16} />
-                <span>Ask Soul</span>
-              </button>
+            <div className="dialogue-box-container">
+              <div className="dialogue-input-box">
+                <input
+                  type="text"
+                  placeholder={`Preguntar a ${ancestor.name}...`}
+                  value={dialogueQuery}
+                  onChange={(e) => setDialogueQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleGenerate('dialogue');
+                  }}
+                  className="dialogue-input"
+                />
+                <button
+                  type="button"
+                  className="dialogue-send-btn"
+                  onClick={() => handleGenerate('dialogue')}
+                  disabled={isGenerating}
+                >
+                  <Sparkles size={16} />
+                  <span>Preguntar</span>
+                </button>
+              </div>
+
+              {/* Quick Prompt Suggestions */}
+              <div className="dialogue-suggestions">
+                <span className="suggestions-label">Sugerencias rápidas:</span>
+                <div className="suggestions-chips">
+                  {dialogueSuggestions.map((promptText, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className="suggestion-chip"
+                      onClick={() => {
+                        setDialogueQuery(promptText);
+                        handleGenerate('dialogue', promptText);
+                      }}
+                    >
+                      {promptText}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -248,17 +324,17 @@ export default function MemorialModal({
             {isGenerating ? (
               <div className="generating-state">
                 <div className="flame-spinner"></div>
-                <p>Consulting open weights & weaving remembrance verses...</p>
-                <span className="generating-sub">Running 100% locally on your machine</span>
+                <p>Consultando pesos abiertos de Gemma 2 &amp; tejiendo versos del más allá...</p>
+                <span className="generating-sub">100% privado en tu navegador &bull; Sin servidores de terceros</span>
               </div>
             ) : (
               <>
-                <pre className="verse-text">{generatedText || 'Click generate to craft a personalized verse.'}</pre>
+                <pre className="verse-text">{generatedText || 'Haz clic en una pestaña para componer un verso o relato con IA.'}</pre>
 
                 <div className="verse-actions-bar">
                   <div className="privacy-indicator">
                     <ShieldCheck size={14} className="privacy-icon" />
-                    <span>{activeProviderName} &bull; Never transmitted to third-party servers</span>
+                    <span>{activeProviderName} &bull; Modelo abierto local</span>
                   </div>
 
                   <div className="verse-buttons">
@@ -266,25 +342,36 @@ export default function MemorialModal({
                       type="button"
                       className="verse-btn"
                       onClick={() => handleGenerate(activeTab)}
-                      title="Re-generate verse"
+                      title="Re-componer verso"
                     >
                       <Sparkles size={14} />
-                      <span>Re-compose</span>
+                      <span>Re-componer</span>
                     </button>
                     <button
                       type="button"
                       className="verse-btn"
                       onClick={handleCopy}
-                      title="Copy verse text"
+                      title="Copiar texto del verso"
                     >
                       {copied ? <Check size={14} /> : <Copy size={14} />}
-                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                      <span>{copied ? 'Copiado' : 'Copiar'}</span>
                     </button>
                   </div>
                 </div>
               </>
             )}
           </div>
+        </div>
+
+        {/* Modal Bottom Action Bar */}
+        <div className="memorial-modal-footer">
+          <button
+            type="button"
+            className="modal-footer-close-btn"
+            onClick={onClose}
+          >
+            Cerrar [Esc]
+          </button>
         </div>
       </div>
     </div>

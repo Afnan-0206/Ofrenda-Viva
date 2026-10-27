@@ -5,6 +5,15 @@ import { X, Plus, Sparkles } from 'lucide-react';
  * AddOfferingModal — Place a custom offering or favorite artifact on the altar.
  */
 export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const [name, setName] = useState('');

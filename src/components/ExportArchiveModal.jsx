@@ -13,6 +13,15 @@ export default function ExportArchiveModal({
   onImportData,
   onResetData
 }) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   const fileInputRef = useRef(null);
 

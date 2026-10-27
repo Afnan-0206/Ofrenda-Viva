@@ -32,11 +32,19 @@ export default function AiSettingsModal({ isOpen, onClose }) {
   const [availableModels, setAvailableModels] = useState([]);
 
   useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
     const config = getAiConfig();
     setProvider(config.activeProvider || AI_PROVIDERS.LOCAL_GEMMA);
     setOllamaUrl(config.ollamaUrl || 'http://localhost:11434');
     setOllamaModel(config.ollamaModel || 'gemma2:2b');
-  }, [isOpen]);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleSave = () => {
     setAiConfig({
