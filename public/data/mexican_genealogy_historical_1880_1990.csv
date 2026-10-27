@@ -1,0 +1,31 @@
+id,name,birth_year,death_year,lifespan,gender,state,epoch,occupation,cause_category,anomaly_flag,notes
+1,Esperanza Morales,1882,1918,36,F,Puebla,Revolución,Tejedora de rebozo,Spanish Flu Pandemic,1,Falleció durante la segunda ola de la gripe española en noviembre de 1918
+2,Manuel Cárdenas,1875,1914,39,M,Michoacán,Revolución,Campesino maicero,Revolution Conflict,1,Caído en la batalla del Bajío durante la contienda agrarista
+3,Guadalupe Sandoval,1880,1968,88,F,Oaxaca,México Contemporáneo,Curandera botánica,Natural Senescence,0,Longevidad notable en los Valles Centrales transmitiendo saberes ancestrales
+4,Ignacio Velasco,1890,1918,28,M,Ciudad de México,Revolución,Tipógrafo de gaceta,Spanish Flu Pandemic,1,Brote severo en la capital tras el arribo de tropas ferroviarias
+5,Rosario Aguilar,1895,1974,79,F,Jalisco,Reconstrucción,Alfarera de barro negro,Cardiovascular,0,Fundadora del taller familiar de cerámica vidriada
+6,Salvador Rivas,1888,1915,27,M,Zacatecas,Revolución,Ferroviario maquinista,Revolution Conflict,1,Defensor de la red ferroviaria norte en la toma de Zacatecas
+7,Catalina Domínguez,1902,1985,83,F,Veracruz,Reconstrucción,Maestra rural normalista,Respiratory,0,Pionera en las misiones culturales del Papaloapan
+8,Vicente Fuentes,1878,1948,70,M,Guanajuato,Reconstrucción,Minero de plata,Pulmonary Silicosis,0,Trabajador en la veta madre de Guanajuato
+9,Dolores Peña,1898,1918,20,F,Tlaxcala,Revolución,Costurera de manteles,Spanish Flu Pandemic,1,Mortalidad pandémica juvenil en el valle tlaxcalteca
+10,Arturo Mendoza,1912,1988,76,M,Puebla,México Contemporáneo,Maestro cantero,Cardiovascular,0,Escultor de cantera rosa en portales coloniales
+11,Josefina Ortiz,1905,1992,87,F,Michoacán,México Contemporáneo,Cocinera tradicional,Natural Senescence,0,Reconocida por la preservación del mole de guajolote y corundas
+12,Emilio Carrillo,1885,1916,31,M,Morelos,Revolución,Jornalero cañero,Revolution Conflict,1,Movimiento zapatista de Anenecuilco
+13,Beatriz Silva,1910,1957,47,F,San Luis Potosí,México Contemporáneo,Enfermera sanitaria,Asian Flu Epidemic,1,Falleció atendiendo el brote de influenza H2N2 en 1957
+14,Felipe Zambrano,1892,1970,78,M,Chiapas,México Contemporáneo,Cafeticultor de sombra,Natural Senescence,0,Finca familiar en el Soconusco
+15,Maria Elena Lara,1920,2001,81,F,Oaxaca,México Contemporáneo,Bordadora zapoteca,Cardiovascular,0,Maestra del telar de cintura en Teotitlán del Valle
+16,Gonzalo Beltrán,1870,1913,43,M,Coahuila,Revolución,Ranchero maderista,Revolution Conflict,1,Conflicto armado tras la Decena Trágica
+17,Amparo Medina,1915,1998,83,F,Yucatán,México Contemporáneo,Partera henequenera,Natural Senescence,0,Conocedora de hierbas medicinales mayas
+18,Rodolfo Chávez,1896,1918,22,M,Hidalgo,Revolución,Operador de horno pulquero,Spanish Flu Pandemic,1,Contagio rápido en tinacales del Altiplano Central
+19,Silvia Corona,1925,2010,85,F,Querétaro,México Contemporáneo,Hojalatera artesanal,Natural Senescence,0,Creación de faroles para procesiones del Día de Muertos
+20,Leopoldo Nájera,1908,1975,67,M,Guerrero,México Contemporáneo,Pescador de laguna,Hepatic,0,Pescador artesanal en Coyuca de Benítez
+21,Concepción Ríos,1884,1962,78,F,Puebla,Reconstrucción,Panadera de muertos,Cardiovascular,0,Elaboradora tradicional de pan con agua de azahar y ajonjolí
+22,Bernardo Solís,1899,1919,20,M,Chihuahua,Revolución,Arriero de mulas,Spanish Flu Pandemic,1,Cierre tardío de la ola pandémica en las sierras norteñas
+23,Mercedes Vallejo,1918,1999,81,F,Michoacán,México Contemporáneo,Pintora de lacas y bateas,Natural Senescence,0,Premio artesanal de Uruapan
+24,Hector Gallegos,1930,2014,84,M,Jalisco,México Contemporáneo,Músico de mariachi tradicional,Cardiovascular,0,Ejecutante de vihuela y guitarrón en Cocula
+25,Irma Salgado,1922,1986,64,F,Estado de México,México Contemporáneo,Cultivadora de cempasúchil,Cardiovascular,0,Productora de flores en los campos de Xochimilco y Atlacomulco
+26,Tomás Almonte,1887,1917,30,M,Zacatecas,Revolución,Herrero de forja,Revolution Conflict,1,Producción de herraduras y pertrechos para tropas villistas
+27,Clara Zepeda,1901,1989,88,F,Colima,México Contemporáneo,Salinera de Cuyutlán,Natural Senescence,0,Recolectora de flor de sal con técnicas prehispánicas
+28,Jaime Paredes,1914,1969,55,M,Sonora,México Contemporáneo,Vaquero de agostadero,Trauma Accident,0,Faenas ganaderas en el desierto sonorense
+29,Margarita Quiroz,1891,1918,27,F,Guanajuato,Revolución,Cocinera de fonda,Spanish Flu Pandemic,1,Brote severo en centros urbanos del Bajío
+30,Raúl Benítez,1928,2005,77,M,Oaxaca,México Contemporáneo,Cestero de carrizo,Natural Senescence,0,Artesano en el tianguis dominical de Tlacolula
