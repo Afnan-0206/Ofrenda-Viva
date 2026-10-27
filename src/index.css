@@ -1,0 +1,95 @@
+/* ==========================================================================
+   OFRENDA VIVA — DESIGN SYSTEM & TOKENS
+   Inspired by Día de los Muertos, colonial Mexican carved wood, and candlelight
+   ========================================================================== */
+
+:root {
+  /* Color Palette */
+  --color-bg-night: #090b10;
+  --color-bg-night-surface: #121520;
+  --color-bg-twilight: #161a29;
+  --color-bg-card: rgba(22, 26, 40, 0.88);
+  --color-bg-card-hover: rgba(28, 33, 52, 0.94);
+  
+  /* Cempasúchil & Candle Gold */
+  --color-marigold: #ff8c00;
+  --color-marigold-light: #ffa500;
+  --color-marigold-amber: #ffb703;
+  --color-gold-foil: #d4af37;
+  --color-gold-bright: #ffd700;
+  --color-candle-glow: rgba(255, 165, 0, 0.45);
+
+  /* Traditional Mexican Fiesta Accents */
+  --color-carmine: #e63946;
+  --color-mexican-pink: #f72585;
+  --color-purple: #7209b7;
+  --color-turquoise: #2a9d8f;
+
+  /* Typography Colors */
+  --color-text-main: #f8fafc;
+  --color-text-muted: #cbd5e1;
+  --color-text-subtle: #94a3b8;
+  --color-border-gold: rgba(212, 175, 55, 0.35);
+  --color-border-glow: rgba(255, 140, 0, 0.5);
+
+  /* Typography */
+  --font-serif-display: 'Cinzel Decorative', 'Playfair Display', Georgia, serif;
+  --font-serif-body: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Shadows & Glows */
+  --shadow-candle-glow: 0 0 25px rgba(255, 165, 0, 0.35), 0 0 60px rgba(255, 140, 0, 0.18);
+  --shadow-modal: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 140, 0, 0.15);
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.12);
+
+  /* Transitions */
+  --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-night);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Custom Atmospheric Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090b10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2e344e;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-marigold);
+}
+
+/* Text Selection */
+::selection {
+  background: rgba(255, 140, 0, 0.45);
+  color: #ffffff;
+}
