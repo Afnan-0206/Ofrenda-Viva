@@ -9,8 +9,8 @@ import { translations } from '../utils/translations';
  * Features botanical marigold header, authentic vintage photo aging, dedicated votive candle,
  * and tactile remembrance trigger.
  */
-export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang = 'es' }) {
-  const t = translations[lang] || translations.es;
+export default function AncestorCard({ ancestor, onSelect, onToggleCandle, lang = 'en' }) {
+  const t = translations[lang] || translations.en;
 
   return (
     <div

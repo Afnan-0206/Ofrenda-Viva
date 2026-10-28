@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Flame,
   Volume2,
   VolumeX,
   Moon,
   Sun,
-  Cpu,
   Plus,
   BookOpen,
-  Download,
-  Sparkles,
-  Flower2,
-  Keyboard,
   Languages,
-  Table,
-  Radio
+  LayoutDashboard,
+  Layers,
+  Settings,
+  Download,
+  Keyboard,
+  Flower2,
+  Cpu,
+  ChevronDown,
+  Sparkles
 } from 'lucide-react';
 import { toggleAmbientSound } from '../utils/audioSynth';
 import { translations } from '../utils/translations';
 
-/**
- * Navbar — Atmospheric header with ambient controls, candle mass actions, and altar triggers.
- */
 export default function Navbar({
-  lang = 'es',
+  currentView = 'altar',
+  onViewChange,
+  lang = 'en',
   onToggleLang,
   nightMode,
   onToggleNightMode,
@@ -37,12 +38,26 @@ export default function Navbar({
   onOpenCultureGuide,
   onOpenExport,
   onOpenShortcuts,
-  onOpenTabPfn,
   onOpenArduino,
-  arduinoConnected = false
+  arduinoConnected = false,
+  litCandlesCount = 0,
+  totalAncestorsCount = 0
 }) {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const t = translations[lang] || translations.es;
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+  const toolsMenuRef = useRef(null);
+  const t = translations[lang] || translations.en;
+
+  // Handle outside click for tools dropdown
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (toolsMenuRef.current && !toolsMenuRef.current.contains(e.target)) {
+        setToolsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
 
   const handleToggleAudio = () => {
     toggleAmbientSound((newState) => {
@@ -52,10 +67,10 @@ export default function Navbar({
 
   return (
     <header className="navbar-header">
-      {/* Brand & Theme Title */}
-      <div className="brand-group">
+      {/* Left: Brand Identity */}
+      <div className="brand-group" onClick={() => onViewChange && onViewChange('altar')} style={{ cursor: 'pointer' }}>
         <div className="brand-emblem" aria-hidden="true">
-          <Flame size={24} className="emblem-flame" />
+          <Flame size={22} className="emblem-flame" />
         </div>
         <div className="brand-text">
           <h1 className="brand-title">{t.brandTitle}</h1>
@@ -63,42 +78,70 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Atmospheric & Action Controls */}
-      <div className="navbar-controls">
-        {/* Language Switcher ES / EN */}
+      {/* Center: Main View Switcher Tabs */}
+      <nav className="nav-view-tabs" aria-label="Main Navigation">
         <button
           type="button"
-          className="nav-btn lang-pill"
-          onClick={onToggleLang}
-          title={lang === 'es' ? 'Cambiar a Inglés (Switch to English)' : 'Switch to Spanish (Cambiar a Español)'}
-          aria-label="Toggle language"
+          className={`nav-tab-item ${currentView === 'altar' ? 'active' : ''}`}
+          onClick={() => onViewChange && onViewChange('altar')}
         >
-          <Languages size={16} />
-          <span className="nav-btn-text">{lang === 'es' ? 'ES' : 'EN'}</span>
+          <Layers size={17} />
+          <span>{t.navAltar}</span>
         </button>
 
-        {/* Light All / Extinguish All Candles Quick Button */}
         <button
           type="button"
-          className={`nav-btn ${allCandlesLit ? 'is-active-btn' : ''}`}
+          className={`nav-tab-item ${currentView === 'dashboard' ? 'active' : ''}`}
+          onClick={() => onViewChange && onViewChange('dashboard')}
+        >
+          <LayoutDashboard size={17} />
+          <span>{t.navDashboard}</span>
+          {totalAncestorsCount > 0 && (
+            <span className="nav-tab-badge">{totalAncestorsCount}</span>
+          )}
+        </button>
+
+        <button
+          type="button"
+          className={`nav-tab-item ${currentView === 'culture' ? 'active' : ''}`}
+          onClick={() => {
+            if (onViewChange) onViewChange('culture');
+            if (onOpenCultureGuide) onOpenCultureGuide();
+          }}
+        >
+          <BookOpen size={17} />
+          <span>{t.navTraditions}</span>
+        </button>
+      </nav>
+
+      {/* Right: Actions, Utilities & Language */}
+      <div className="navbar-controls">
+        {/* Candle Vigil Quick Toggle */}
+        <button
+          type="button"
+          className={`nav-action-pill ${allCandlesLit ? 'is-active-btn' : ''}`}
           onClick={onToggleAllCandles}
-          title={allCandlesLit ? 'Apagar velas [C]' : 'Encender velas [C]'}
+          title={allCandlesLit ? 'Apagar velas [C]' : 'Encender todas las velas [C]'}
           aria-label="Toggle all candles"
         >
-          <Flame size={17} />
-          <span className="nav-btn-text">{allCandlesLit ? t.candlesLit : t.candlesDark}</span>
+          <Flame size={16} />
+          <span className="nav-btn-text">
+            {allCandlesLit ? t.candlesLit : t.candlesDark}
+          </span>
+          <span className="pill-counter">
+            {litCandlesCount}/{totalAncestorsCount}
+          </span>
         </button>
 
-        {/* Ambient Sound Toggle */}
+        {/* Ambient Spanish Guitar Sound */}
         <button
           type="button"
-          className={`nav-btn ${isAudioPlaying ? 'is-active-btn' : ''}`}
+          className={`nav-icon-btn ${isAudioPlaying ? 'active' : ''}`}
           onClick={handleToggleAudio}
-          title="Música de guitarra española [M]"
-          aria-label="Toggle ambient music"
+          title={isAudioPlaying ? 'Música activa [M]' : 'Activar guitarra acústica [M]'}
+          aria-label="Toggle music"
         >
           {isAudioPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
-          <span className="nav-btn-text">{isAudioPlaying ? t.musicOn : t.musicOff}</span>
           {isAudioPlaying && (
             <span className="audio-equalizer" aria-hidden="true">
               <span></span><span></span><span></span>
@@ -106,112 +149,127 @@ export default function Navbar({
           )}
         </button>
 
-        {/* Day / Noche de Velas Toggle */}
+        {/* Marigold Petals Scatter */}
         <button
           type="button"
-          className={`nav-btn ${nightMode ? 'is-active-btn' : ''}`}
-          onClick={onToggleNightMode}
-          title={nightMode ? 'Modo Día' : 'Noche de Velas'}
-          aria-label="Toggle night mode"
-        >
-          {nightMode ? <Moon size={18} /> : <Sun size={18} />}
-          <span className="nav-btn-text">{nightMode ? t.night : t.day}</span>
-        </button>
-
-        {/* Floating Petals Toggle & Scatter Button */}
-        <button
-          type="button"
-          className={`nav-btn ${petalsEnabled ? 'is-active-btn' : ''}`}
+          className="nav-icon-btn"
           onClick={onScatterPetals}
-          title="Lluvia de pétalos de Cempasúchil [Space]"
+          title="Esparcir flores de Cempasúchil [Space]"
           aria-label="Scatter petals"
         >
           <Flower2 size={18} />
-          <span className="nav-btn-text">{t.petals}</span>
         </button>
 
-        {/* Culture & Symbolism Guide */}
+        {/* Night / Day Lighting */}
         <button
           type="button"
-          className="nav-btn"
-          onClick={onOpenCultureGuide}
-          title="Significado del Altar de Muertos"
-          aria-label="Cultural Guide"
+          className="nav-icon-btn"
+          onClick={onToggleNightMode}
+          title={nightMode ? 'Cambiar a Luz de Día' : 'Cambiar a Noche de Velas'}
+          aria-label="Toggle lighting"
         >
-          <BookOpen size={18} />
-          <span className="nav-btn-text">{t.significado}</span>
+          {nightMode ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
-        {/* Keyboard Shortcuts Guide */}
-        <button
-          type="button"
-          className="nav-btn"
-          onClick={onOpenShortcuts}
-          title="Atajos de Teclado [?]"
-          aria-label="Keyboard Shortcuts"
-        >
-          <Keyboard size={17} />
-          <span className="nav-btn-text">{t.shortcuts}</span>
-        </button>
+        {/* More Tools Dropdown */}
+        <div className="tools-dropdown-wrapper" ref={toolsMenuRef}>
+          <button
+            type="button"
+            className={`nav-action-pill tools-trigger ${toolsDropdownOpen ? 'open' : ''}`}
+            onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
+            aria-label="Menu de herramientas"
+          >
+            <Settings size={16} />
+            <span className="nav-btn-text">{t.toolsMenu}</span>
+            <ChevronDown size={14} className={`chevron ${toolsDropdownOpen ? 'rotated' : ''}`} />
+          </button>
 
-        {/* TabPFN Ancestral Heritage AI (Prior Labs) */}
-        <button
-          type="button"
-          className="nav-btn tabpfn-nav-pill"
-          onClick={onOpenTabPfn}
-          title="Prior Labs TabPFN-3.5: Pronóstico Demográfico & Detección de Anomalías"
-          aria-label="TabPFN Heritage AI"
-        >
-          <Table size={16} />
-          <span className="nav-btn-text">TabPFN-3.5</span>
-        </button>
+          {toolsDropdownOpen && (
+            <div className="tools-dropdown-menu">
+              <button
+                type="button"
+                className="dropdown-item"
+                onClick={() => {
+                  setToolsDropdownOpen(false);
+                  onOpenExport();
+                }}
+              >
+                <Download size={16} />
+                <div className="dropdown-item-text">
+                  <span>{t.archivar}</span>
+                  <small>{lang === 'es' ? 'Guardar y respaldar datos' : 'Download and restore records'}</small>
+                </div>
+              </button>
 
-        {/* Arduino UNO Q IoT Physical Altar Agent */}
-        <button
-          type="button"
-          className={`nav-btn arduino-nav-pill ${arduinoConnected ? 'is-connected' : ''}`}
-          onClick={onOpenArduino}
-          title="Arduino UNO Q: Enlace Físico con Sensores de Llama y Presencia"
-          aria-label="Arduino UNO Q Hardware"
-        >
-          <Radio size={16} className={arduinoConnected ? 'pulse-radio' : ''} />
-          <span className="nav-btn-text">Arduino UNO Q</span>
-          <span className={`status-dot-mini ${arduinoConnected ? 'active' : ''}`}></span>
-        </button>
+              <button
+                type="button"
+                className="dropdown-item"
+                onClick={() => {
+                  setToolsDropdownOpen(false);
+                  onOpenAiSettings();
+                }}
+              >
+                <Sparkles size={16} />
+                <div className="dropdown-item-text">
+                  <span>{t.aiStatus}</span>
+                  <small>{lang === 'es' ? 'Escribir poemas y recuerdos' : 'Write poems and memories'}</small>
+                </div>
+              </button>
 
-        {/* Open AI Engine Status / Settings */}
-        <button
-          type="button"
-          className="nav-btn ai-status-pill"
-          onClick={onOpenAiSettings}
-          title="Configuración de IA Abierta (Tinker / Gemma 2 / Ollama)"
-          aria-label="AI Engine Settings"
-        >
-          <Cpu size={17} className="ai-icon-pulse" />
-          <span className="nav-btn-text">{t.aiStatus}</span>
-        </button>
+              <button
+                type="button"
+                className="dropdown-item"
+                onClick={() => {
+                  setToolsDropdownOpen(false);
+                  onOpenArduino();
+                }}
+              >
+                <Cpu size={16} />
+                <div className="dropdown-item-text">
+                  <span>{lang === 'es' ? 'Sensor de Vela Real' : 'Real Candle Sensor'}</span>
+                  <small>{arduinoConnected ? (lang === 'es' ? 'Conectado' : 'Connected') : (lang === 'es' ? 'Modo de prueba listo' : 'Ready to test')}</small>
+                </div>
+              </button>
 
-        {/* Permanent Archive Export */}
-        <button
-          type="button"
-          className="nav-btn"
-          onClick={onOpenExport}
-          title="Guardar o imprimir ofrenda"
-          aria-label="Export Archive"
-        >
-          <Download size={18} />
-          <span className="nav-btn-text">{t.archivar}</span>
-        </button>
+              <button
+                type="button"
+                className="dropdown-item"
+                onClick={() => {
+                  setToolsDropdownOpen(false);
+                  onOpenShortcuts();
+                }}
+              >
+                <Keyboard size={16} />
+                <div className="dropdown-item-text">
+                  <span>{t.shortcuts}</span>
+                  <small>[?] / [Space] / [C] / [A]</small>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
 
-        {/* Add Loved One Primary Action */}
+        {/* Primary CTA: Add Loved One */}
         <button
           type="button"
           className="btn-add-loved-one"
           onClick={onOpenAddAncestor}
-          title="Colocar un ser querido en el altar [A]"
+          title="Agregar a un ser querido al altar [A]"
         >
-          <Plus size={18} />
-          <span>{t.addToAltar}</span>
+          <Plus size={16} />
+          <span>{t.navAddLovedOne}</span>
+        </button>
+
+        {/* Language Switcher */}
+        <button
+          type="button"
+          className="nav-action-pill lang-pill"
+          onClick={onToggleLang}
+          title={lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+          aria-label="Toggle language"
+        >
+          <Languages size={15} />
+          <span>{lang === 'es' ? 'ES' : 'EN'}</span>
         </button>
       </div>
     </header>
