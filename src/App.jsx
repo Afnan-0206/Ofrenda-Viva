@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import PapelPicado from './components/PapelPicado';
 import PetalCanvas from './components/PetalCanvas';
 import AltarStage from './components/AltarStage';
+import DashboardView from './components/DashboardView';
 import MemorialModal from './components/MemorialModal';
 import OfferingDetailModal from './components/OfferingDetailModal';
 import AddAncestorModal from './components/AddAncestorModal';
@@ -21,16 +22,20 @@ import confetti from 'canvas-confetti';
 import './App.css';
 
 export default function App() {
-  // Language state (ES / EN)
+  // Language state (defaults to simple English)
   const [lang, setLang] = useState(() => {
     try {
-      return localStorage.getItem('ofrenda_lang_v1') || 'es';
+      const saved = localStorage.getItem('ofrenda_lang_v1');
+      return saved === 'es' ? 'es' : 'en';
     } catch {
-      return 'es';
+      return 'en';
     }
   });
 
-  const t = translations[lang] || translations.es;
+  const t = translations[lang] || translations.en;
+
+  // Active view: 'altar' | 'dashboard' | 'culture'
+  const [currentView, setCurrentView] = useState('altar');
 
   // Search input ref for instant keyboard focusing
   const searchInputRef = useRef(null);
@@ -87,10 +92,10 @@ export default function App() {
           setAltarVigilLit(true);
           setAncestors((prev) => prev.map((a) => ({ ...a, candleLit: true })));
           playMatchStrikeSound();
-          showToast(lang === 'es' ? '¡Llama física detectada por Arduino UNO Q! Velas encendidas.' : 'Physical flame detected on Arduino UNO Q! Altar lit.');
+          showToast(lang === 'es' ? '¡Llama detectada por el sensor! Velas encendidas.' : 'Flame detected! Altar lit.');
         } else if (d.event === 'presence_detected') {
           playSpanishGuitarArpeggio();
-          showToast(lang === 'es' ? 'Presencia detectada junto al altar por Arduino UNO Q.' : 'Presence detected at the physical shrine by Arduino UNO Q.');
+          showToast(lang === 'es' ? 'Presencia detectada junto al altar.' : 'Presence detected at the memorial shrine.');
         }
       }
     });
@@ -140,10 +145,10 @@ export default function App() {
     const targetState = !allCandlesLit;
     if (targetState) {
       playMatchStrikeSound();
-      showToast(lang === 'es' ? 'Todas las velas del altar han sido encendidas' : 'All altar vigil candles illuminated');
+      showToast(lang === 'es' ? 'Todas las velas del altar han sido encendidas' : 'All altar candles illuminated');
     } else {
       playExtinguishSound();
-      showToast(lang === 'es' ? 'Velas apagadas en paz' : 'All vigil candles extinguished');
+      showToast(lang === 'es' ? 'Velas apagadas con respeto' : 'All candles extinguished');
     }
     setAltarVigilLit(targetState);
     setAncestors((prev) => prev.map((a) => ({ ...a, candleLit: targetState })));
@@ -158,7 +163,7 @@ export default function App() {
         origin: { y: 0.65 },
         colors: ['#ff8c00', '#ffa500', '#ffb703', '#ffd166', '#d97706']
       });
-      showToast(lang === 'es' ? 'Lluvia de pétalos de cempasúchil esparcida' : 'Marigold petal shower scattered');
+      showToast(lang === 'es' ? 'Lluvia de flores de cempasúchil esparcida' : 'Marigold flower shower scattered');
     } catch (e) {
       // Confetti fallback
     }
@@ -167,7 +172,6 @@ export default function App() {
   // Global Keyboard Shortcuts Listener
   useEffect(() => {
     const handleGlobalKeyDown = (e) => {
-      // If user is currently typing in an input or textarea
       const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
 
       if (e.key === 'Escape') {
@@ -270,6 +274,8 @@ export default function App() {
     showToast('📜 ¡Archivo de la ofrenda importado con éxito!');
   };
 
+  const litCount = ancestors.filter((a) => a.candleLit).length;
+
   return (
     <div
       className={`app-container ${nightMode ? 'theme-night' : 'theme-twilight'}`}
@@ -299,6 +305,14 @@ export default function App() {
 
       {/* Header & Controls */}
       <Navbar
+        currentView={currentView}
+        onViewChange={(view) => {
+          if (view === 'culture') {
+            setIsCultureGuideOpen(true);
+          } else {
+            setCurrentView(view);
+          }
+        }}
         lang={lang}
         onToggleLang={handleToggleLang}
         nightMode={nightMode}
@@ -313,30 +327,50 @@ export default function App() {
         onOpenCultureGuide={() => setIsCultureGuideOpen(true)}
         onOpenExport={() => setIsExportOpen(true)}
         onOpenShortcuts={() => setIsShortcutsOpen(true)}
-        onOpenTabPfn={() => setIsTabPfnOpen(true)}
         onOpenArduino={() => setIsArduinoOpen(true)}
         arduinoConnected={arduinoConnected}
+        litCandlesCount={litCount}
+        totalAncestorsCount={ancestors.length}
       />
 
-      {/* Main Altar Area */}
+      {/* Main View Area */}
       <main className="main-altar-canvas">
-        <AltarStage
-          lang={lang}
-          ancestors={ancestors}
-          offerings={offerings}
-          onSelectAncestor={setSelectedAncestor}
-          onToggleCandle={handleToggleCandle}
-          onSelectOffering={setSelectedOffering}
-          onOpenAddAncestor={() => setIsAddAncestorOpen(true)}
-          onOpenAddOffering={() => setIsAddOfferingOpen(true)}
-          altarVigilLit={altarVigilLit}
-          onToggleAltarVigil={() => setAltarVigilLit(!altarVigilLit)}
-          allCandlesLit={allCandlesLit}
-          onToggleAllCandles={handleToggleAllCandles}
-          onScatterPetals={handleScatterPetals}
-          onOpenShortcuts={() => setIsShortcutsOpen(true)}
-          searchInputRef={searchInputRef}
-        />
+        {currentView === 'altar' ? (
+          <AltarStage
+            lang={lang}
+            ancestors={ancestors}
+            offerings={offerings}
+            onSelectAncestor={setSelectedAncestor}
+            onToggleCandle={handleToggleCandle}
+            onSelectOffering={setSelectedOffering}
+            onOpenAddAncestor={() => setIsAddAncestorOpen(true)}
+            onOpenAddOffering={() => setIsAddOfferingOpen(true)}
+            altarVigilLit={altarVigilLit}
+            onToggleAltarVigil={() => setAltarVigilLit(!altarVigilLit)}
+            allCandlesLit={allCandlesLit}
+            onToggleAllCandles={handleToggleAllCandles}
+            onScatterPetals={handleScatterPetals}
+            onOpenShortcuts={() => setIsShortcutsOpen(true)}
+            searchInputRef={searchInputRef}
+          />
+        ) : (
+          <DashboardView
+            lang={lang}
+            ancestors={ancestors}
+            offerings={offerings}
+            onSelectAncestor={setSelectedAncestor}
+            onToggleCandle={handleToggleCandle}
+            onToggleAllCandles={handleToggleAllCandles}
+            allCandlesLit={allCandlesLit}
+            onOpenAddAncestor={() => setIsAddAncestorOpen(true)}
+            onOpenAddOffering={() => setIsAddOfferingOpen(true)}
+            onOpenExport={() => setIsExportOpen(true)}
+            onAddAncestorFromTabPfn={(newAncestor) => {
+              handleAddAncestor(newAncestor);
+            }}
+            arduinoConnected={arduinoConnected}
+          />
+        )}
       </main>
 
       {/* Footer Cultural Citation */}
@@ -356,34 +390,40 @@ export default function App() {
         onClose={() => setSelectedAncestor(null)}
         onUpdateAncestor={handleUpdateAncestor}
         onToggleCandle={handleToggleCandle}
+        lang={lang}
       />
 
       <OfferingDetailModal
         offering={selectedOffering}
         isOpen={Boolean(selectedOffering)}
         onClose={() => setSelectedOffering(null)}
+        lang={lang}
       />
 
       <AddAncestorModal
         isOpen={isAddAncestorOpen}
         onClose={() => setIsAddAncestorOpen(false)}
         onAddAncestor={handleAddAncestor}
+        lang={lang}
       />
 
       <AddOfferingModal
         isOpen={isAddOfferingOpen}
         onClose={() => setIsAddOfferingOpen(false)}
         onAddOffering={handleAddOffering}
+        lang={lang}
       />
 
       <AiSettingsModal
         isOpen={isAiSettingsOpen}
         onClose={() => setIsAiSettingsOpen(false)}
+        lang={lang}
       />
 
       <CultureGuideModal
         isOpen={isCultureGuideOpen}
         onClose={() => setIsCultureGuideOpen(false)}
+        lang={lang}
       />
 
       <ExportArchiveModal
@@ -393,6 +433,7 @@ export default function App() {
         offerings={offerings}
         onImportData={handleImportData}
         onResetData={handleResetData}
+        lang={lang}
       />
 
       <ShortcutsModal
@@ -407,7 +448,7 @@ export default function App() {
         ancestors={ancestors}
         onAddAncestorFromTabPfn={(newAncestor) => {
           handleAddAncestor(newAncestor);
-          showToast(lang === 'es' ? 'Antepasado añadido desde TabPFN-3.5 al altar' : 'Ancestor added from TabPFN-3.5');
+          showToast(lang === 'es' ? 'Antepasado añadido al altar' : 'Ancestor added to altar');
         }}
         lang={lang}
       />
