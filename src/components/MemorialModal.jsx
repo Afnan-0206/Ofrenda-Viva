@@ -18,17 +18,16 @@ import {
   Flower2
 } from 'lucide-react';
 
-/**
- * MemorialModal — Deep remembrance view and Cultural AI Chronicler.
- * Generates Calaveritas Literarias, elegies, oral history, and ancestral dialogue.
- */
 export default function MemorialModal({
   ancestor,
   isOpen,
   onClose,
   onUpdateAncestor,
-  onToggleCandle
+  onToggleCandle,
+  lang = 'en'
 }) {
+  const isEs = lang === 'es';
+
   // Global Esc key listener
   useEffect(() => {
     if (!isOpen) return;
@@ -42,11 +41,11 @@ export default function MemorialModal({
   if (!isOpen || !ancestor) return null;
 
   const [activeTab, setActiveTab] = useState('calaverita'); // 'calaverita' | 'elegy' | 'story' | 'dialogue'
-  const [language, setLanguage] = useState('es');
+  const [language, setLanguage] = useState(isEs ? 'es' : 'en');
   const [dialogueQuery, setDialogueQuery] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState(ancestor.calaverita || '');
-  const [activeProviderName, setActiveProviderName] = useState('Bardo Folclórico Tradicional');
+  const [activeProviderName, setActiveProviderName] = useState(isEs ? 'Escritor de Recuerdos' : 'AI Memory Writer');
   const [copied, setCopied] = useState(false);
   const [flowerOffered, setFlowerOffered] = useState(false);
 
@@ -60,9 +59,8 @@ export default function MemorialModal({
         language
       });
       setGeneratedText(response.content);
-      setActiveProviderName(response.provider);
+      setActiveProviderName(response.provider || (isEs ? 'Escritor de Recuerdos' : 'AI Memory Writer'));
 
-      // Auto-save calaverita to ancestor profile if generated
       if (type === 'calaverita') {
         onUpdateAncestor({
           ...ancestor,
@@ -70,7 +68,7 @@ export default function MemorialModal({
         });
       }
     } catch (err) {
-      console.error('Error al generar verso:', err);
+      console.error('Error generating verse:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -98,10 +96,10 @@ export default function MemorialModal({
 
   const dialogueSuggestions = language === 'en'
     ? [
-        'What advice would you give me for my journey?',
-        'What was your greatest joy in life?',
+        'What advice would you give me today?',
+        'What was your happiest memory in life?',
         'Do you remember when we shared meals together?',
-        'How do you feel about this ofrenda in your honor?'
+        'How do you feel about this altar in your honor?'
       ]
     : [
         '¿Qué consejo me das hoy para seguir adelante?',
@@ -118,8 +116,8 @@ export default function MemorialModal({
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar ventana de recuerdo"
-          title="Cerrar (Esc)"
+          aria-label={isEs ? 'Cerrar' : 'Close'}
+          title="Close (Esc)"
         >
           <X size={20} />
         </button>
@@ -128,7 +126,7 @@ export default function MemorialModal({
         <div className="memorial-header">
           <div className="memorial-portrait-wrap">
             <img
-              src={ancestor.photo}
+              src={ancestor.photo || ancestor.image}
               alt={ancestor.name}
               className="memorial-portrait-img"
               onError={(e) => {
@@ -146,15 +144,23 @@ export default function MemorialModal({
 
           <div className="memorial-titles">
             <div className="memorial-top-tags">
-              <span className="memorial-tier-badge">Altar Nivel {ancestor.tier || 2}</span>
+              <span className="memorial-tier-badge">
+                {ancestor.tier === 3
+                  ? (isEs ? 'Piso Superior' : 'Top Shelf')
+                  : (isEs ? 'Piso Medio' : 'Middle Shelf')}
+              </span>
               <button
                 type="button"
                 className={`memorial-tribute-btn ${flowerOffered ? 'offered' : ''}`}
                 onClick={handleOfferFlower}
-                title="Ofrendar una flor de cempasúchil"
+                title={isEs ? 'Ofrendar flor de cempasúchil' : 'Give a yellow marigold flower'}
               >
                 <Flower2 size={13} />
-                <span>{flowerOffered ? 'Ofrenda Entregada' : 'Ofrendar Flor'}</span>
+                <span>
+                  {flowerOffered
+                    ? (isEs ? 'Flor Ofrendada' : 'Flower Given')
+                    : (isEs ? 'Dar una Flor' : 'Give a Flower')}
+                </span>
               </button>
             </div>
             <h2 className="memorial-name">{ancestor.name}</h2>
@@ -172,7 +178,7 @@ export default function MemorialModal({
               <div className="fav-pill">
                 <Utensils size={14} className="fav-icon" />
                 <div>
-                  <span className="fav-label">Platillos y Sabores:</span>
+                  <span className="fav-label">{isEs ? 'Comidas Favoritas:' : 'Favorite Foods:'}</span>
                   <span className="fav-value">{ancestor.favoriteFoods}</span>
                 </div>
               </div>
@@ -181,7 +187,7 @@ export default function MemorialModal({
               <div className="fav-pill">
                 <Music size={14} className="fav-icon" />
                 <div>
-                  <span className="fav-label">Música y Melodías:</span>
+                  <span className="fav-label">{isEs ? 'Música Favorita:' : 'Favorite Music:'}</span>
                   <span className="fav-value">{ancestor.favoriteMusic}</span>
                 </div>
               </div>
@@ -189,37 +195,31 @@ export default function MemorialModal({
           </div>
         </div>
 
-        {/* ================= AI CHRONICLER SECTION ================= */}
+        {/* ================= MEMORY WRITER SECTION ================= */}
         <div className="ai-chronicler-section">
           <div className="chronicler-header">
             <div className="chronicler-title-group">
               <Sparkles size={18} className="chronicler-sparkle" />
-              <h3 className="chronicler-title">El Guardián del Recuerdo</h3>
-              <span className="chronicler-badge">Cronista de Memoria</span>
+              <h3 className="chronicler-title">
+                {isEs ? 'Escritor de Recuerdos' : 'AI Memory Writer'}
+              </h3>
             </div>
 
             {/* Language switch */}
             <div className="language-selector">
               <button
                 type="button"
-                className={`lang-btn ${language === 'es' ? 'is-active' : ''}`}
-                onClick={() => setLanguage('es')}
-              >
-                Español
-              </button>
-              <button
-                type="button"
-                className={`lang-btn ${language === 'bilingual' ? 'is-active' : ''}`}
-                onClick={() => setLanguage('bilingual')}
-              >
-                Bilingüe
-              </button>
-              <button
-                type="button"
                 className={`lang-btn ${language === 'en' ? 'is-active' : ''}`}
                 onClick={() => setLanguage('en')}
               >
                 English
+              </button>
+              <button
+                type="button"
+                className={`lang-btn ${language === 'es' ? 'is-active' : ''}`}
+                onClick={() => setLanguage('es')}
+              >
+                Español
               </button>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function MemorialModal({
               }}
             >
               <Feather size={14} />
-              <span>Calaverita Literaria</span>
+              <span>{isEs ? 'Poema Tradicional' : 'Memorial Poem'}</span>
             </button>
 
             <button
@@ -247,7 +247,7 @@ export default function MemorialModal({
               }}
             >
               <Heart size={14} />
-              <span>Elegía Poética</span>
+              <span>{isEs ? 'Homenaje Cálido' : 'Tribute Words'}</span>
             </button>
 
             <button
@@ -259,7 +259,7 @@ export default function MemorialModal({
               }}
             >
               <BookOpen size={14} />
-              <span>Historia Oral</span>
+              <span>{isEs ? 'Historia de Vida' : 'Life Story'}</span>
             </button>
 
             <button
@@ -268,7 +268,7 @@ export default function MemorialModal({
               onClick={() => setActiveTab('dialogue')}
             >
               <MessageSquare size={14} />
-              <span>Diálogo Espiritual</span>
+              <span>{isEs ? 'Hacer una Pregunta' : 'Ask a Question'}</span>
             </button>
           </div>
 
@@ -278,7 +278,11 @@ export default function MemorialModal({
               <div className="dialogue-input-box">
                 <input
                   type="text"
-                  placeholder={`Preguntar algo a ${ancestor.name}...`}
+                  placeholder={
+                    isEs
+                      ? `Preguntar algo a ${ancestor.name}...`
+                      : `Ask ${ancestor.name} something...`
+                  }
                   value={dialogueQuery}
                   onChange={(e) => setDialogueQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -293,13 +297,15 @@ export default function MemorialModal({
                   disabled={isGenerating}
                 >
                   <Sparkles size={16} />
-                  <span>Conversar</span>
+                  <span>{isEs ? 'Preguntar' : 'Ask'}</span>
                 </button>
               </div>
 
               {/* Quick Prompt Suggestions */}
               <div className="dialogue-suggestions">
-                <span className="suggestions-label">Preguntas de reflexión:</span>
+                <span className="suggestions-label">
+                  {isEs ? 'Preguntas sugeridas:' : 'Ideas to ask:'}
+                </span>
                 <div className="suggestions-chips">
                   {dialogueSuggestions.map((promptText, idx) => (
                     <button
@@ -324,17 +330,25 @@ export default function MemorialModal({
             {isGenerating ? (
               <div className="generating-state">
                 <div className="flame-spinner"></div>
-                <p>Tejiendo versos del recuerdo en el silencio de las velas...</p>
-                <span className="generating-sub">Inferencia privada y reverente</span>
+                <p>
+                  {isEs
+                    ? 'Escribiendo un recuerdo con cariño...'
+                    : 'Writing a gentle memory for them...'}
+                </p>
               </div>
             ) : (
               <>
-                <pre className="verse-text">{generatedText || 'Haz clic en una pestaña para componer un verso o memoria tradicional.'}</pre>
+                <pre className="verse-text">
+                  {generatedText ||
+                    (isEs
+                      ? 'Haz clic en una pestaña arriba para escribir un poema o recuerdo.'
+                      : 'Click a tab above to write a poem or heartfelt tribute.')}
+                </pre>
 
                 <div className="verse-actions-bar">
                   <div className="privacy-indicator">
                     <ShieldCheck size={14} className="privacy-icon" />
-                    <span>{activeProviderName}</span>
+                    <span>{isEs ? '100% Privado' : '100% Private'}</span>
                   </div>
 
                   <div className="verse-buttons">
@@ -342,19 +356,19 @@ export default function MemorialModal({
                       type="button"
                       className="verse-btn"
                       onClick={() => handleGenerate(activeTab)}
-                      title="Recomponer verso"
+                      title={isEs ? 'Reescribir' : 'Rewrite'}
                     >
                       <Sparkles size={14} />
-                      <span>Recomponer</span>
+                      <span>{isEs ? 'Reescribir' : 'Rewrite'}</span>
                     </button>
                     <button
                       type="button"
                       className="verse-btn"
                       onClick={handleCopy}
-                      title="Copiar texto del verso"
+                      title={isEs ? 'Copiar texto' : 'Copy text'}
                     >
                       {copied ? <Check size={14} /> : <Copy size={14} />}
-                      <span>{copied ? 'Copiado' : 'Copiar'}</span>
+                      <span>{copied ? (isEs ? 'Copiado' : 'Copied') : (isEs ? 'Copiar' : 'Copy')}</span>
                     </button>
                   </div>
                 </div>
@@ -370,7 +384,7 @@ export default function MemorialModal({
             className="modal-footer-close-btn"
             onClick={onClose}
           >
-            Cerrar [Esc]
+            {isEs ? 'Cerrar [Esc]' : 'Close [Esc]'}
           </button>
         </div>
       </div>

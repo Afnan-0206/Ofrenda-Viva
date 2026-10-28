@@ -1,13 +1,8 @@
 import React from 'react';
 import { X, Flame, Flower2, Heart, Shield, Wind, Droplet, Sprout } from 'lucide-react';
-import { OFRENDA_CULTURE_INFO } from '../utils/initialData';
 import { MiniMarigold } from './CempasuchilDecorations';
 
-/**
- * CultureGuideModal — Educational guide explaining the rich cultural symbolism
- * of Día de los Muertos, the 3 tiers of the altar, and why Open Innovation honors this spirit.
- */
-export default function CultureGuideModal({ isOpen, onClose }) {
+export default function CultureGuideModal({ isOpen, onClose, lang = 'en' }) {
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
@@ -19,6 +14,8 @@ export default function CultureGuideModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
+  const isEs = lang === 'es';
+
   return (
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="modal-card culture-guide-card" onClick={(e) => e.stopPropagation()}>
@@ -26,7 +23,7 @@ export default function CultureGuideModal({ isOpen, onClose }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar guía cultural"
+          aria-label={isEs ? 'Cerrar guía' : 'Close guide'}
         >
           <X size={20} />
         </button>
@@ -35,90 +32,132 @@ export default function CultureGuideModal({ isOpen, onClose }) {
           <div className="guide-header-icon-wrap">
             <MiniMarigold size={36} color="#ff8c00" />
           </div>
-          <h2>{OFRENDA_CULTURE_INFO.title}</h2>
-          <p className="guide-sub">{OFRENDA_CULTURE_INFO.summary}</p>
+          <h2>
+            {isEs
+              ? 'Cómo Funciona la Tradición del Altar de Muertos'
+              : 'How the Day of the Dead Altar Works'}
+          </h2>
+          <p className="guide-sub">
+            {isEs
+              ? 'El Día de los Muertos es una celebración cálida y alegre para recordar a los familiares, amigos y mascotas que han partido.'
+              : 'Day of the Dead is a warm, joyful Mexican tradition to remember and celebrate family members, dear friends, and faithful pets.'}
+          </p>
         </div>
 
-        {/* 3 Sacred Tiers Breakdown */}
+        {/* 3 Shelves Breakdown */}
         <div className="guide-section">
-          <h3>Los Tres Niveles Sagrados del Altar de Muertos</h3>
+          <h3>
+            {isEs
+              ? 'Los Tres Pisos del Altar'
+              : 'The Three Shelves of the Altar'}
+          </h3>
           <div className="tiers-explanation-grid">
-            {OFRENDA_CULTURE_INFO.tiers.map((tier) => (
-              <div key={tier.tierNumber} className="tier-info-box">
-                <div className="tier-box-badge">Nivel {tier.tierNumber}</div>
-                <h4>{tier.name}</h4>
-                <p>{tier.description}</p>
-              </div>
-            ))}
+            <div className="tier-info-box">
+              <div className="tier-box-badge">{isEs ? 'Piso Superior' : 'Top Shelf'}</div>
+              <h4>{isEs ? 'Guías y Maestros' : 'Guiding Lights & Heroes'}</h4>
+              <p>
+                {isEs
+                  ? 'Dedicado a los antepasados mayores, héroes o personas que nos inspiraron con su ejemplo y sabiduría.'
+                  : 'Honors ancient ancestors, teachers, or historical pioneers who guide us with their wisdom.'}
+              </p>
+            </div>
+
+            <div className="tier-info-box">
+              <div className="tier-box-badge">{isEs ? 'Piso Medio' : 'Middle Shelf'}</div>
+              <h4>{isEs ? 'Familiares, Amigos y Mascotas' : 'Family, Friends & Pets'}</h4>
+              <p>
+                {isEs
+                  ? 'El corazón del altar: fotos de abuelos, padres, hermanos, amigos y mascotas queridas, con sus comidas y gustos favoritos.'
+                  : 'The heart of the altar: photos of parents, grandparents, friends, and pets, along with their favorite foods and treats.'}
+              </p>
+            </div>
+
+            <div className="tier-info-box">
+              <div className="tier-box-badge">{isEs ? 'Piso Inferior' : 'Bottom Shelf'}</div>
+              <h4>{isEs ? 'Comida, Agua y Velas' : 'Food, Water & Candles'}</h4>
+              <p>
+                {isEs
+                  ? 'Los elementos esenciales para recibir a las visitas: agua fresca, sal, pan dulce y velas encendidas para alumbrar el camino.'
+                  : 'Traditional welcoming gifts: fresh water, bread, salt, fruit, and warm candlelight to guide the way home.'}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* The 4 Classical Elements on the Altar */}
+        {/* The 4 Classical Elements */}
         <div className="guide-section">
-          <h3>Los Cuatro Elementos Sagrados (Los Cuatro Elementos)</h3>
+          <h3>
+            {isEs
+              ? 'Los Cuatro Elementos Naturales'
+              : 'The Four Natural Elements on the Altar'}
+          </h3>
           <div className="elements-four-grid">
             <div className="element-card">
               <div className="element-icon-circle wind">
                 <Wind size={22} />
               </div>
-              <h4>Viento (Aire)</h4>
-              <p>Representado por el <em>Papel Picado</em> que ondea suavemente al llegar los espíritus a la casa.</p>
+              <h4>{isEs ? 'Viento (Aire)' : 'Wind (Air)'}</h4>
+              <p>
+                {isEs
+                  ? 'Banderitas de papel picado que se mueven con la brisa para avisar que las almas han llegado.'
+                  : 'Colorful cut-paper banners that flutter gently in the breeze when loved ones arrive.'}
+              </p>
             </div>
 
             <div className="element-card">
               <div className="element-icon-circle fire">
                 <Flame size={22} />
               </div>
-              <h4>Fuego (Fuego)</h4>
-              <p>Representado por las <em>Velas y Veladoras</em> que iluminan el camino a través del Mictlán.</p>
+              <h4>{isEs ? 'Fuego (Velas)' : 'Fire (Candles)'}</h4>
+              <p>
+                {isEs
+                  ? 'Velas encendidas que dan luz y calor para guiar el camino de regreso a casa.'
+                  : 'Glowing candles that provide light and warmth so visiting souls find their way home.'}
+              </p>
             </div>
 
             <div className="element-card">
               <div className="element-icon-circle water">
                 <Droplet size={22} />
               </div>
-              <h4>Agua (Agua)</h4>
-              <p>Un vaso de agua pura para saciar la sed del viajero tras su largo trayecto espiritual.</p>
+              <h4>{isEs ? 'Agua' : 'Water'}</h4>
+              <p>
+                {isEs
+                  ? 'Un vaso con agua limpia para calmar la sed después de un largo viaje.'
+                  : 'A glass of fresh, clean water to quench their thirst after a long journey.'}
+              </p>
             </div>
 
             <div className="element-card">
               <div className="element-icon-circle earth">
                 <Sprout size={22} />
               </div>
-              <h4>Tierra (Tierra)</h4>
-              <p>Representada por el <em>Pan de Muerto</em> y los frutos de la cosecha que celebran la dulzura de la vida.</p>
+              <h4>{isEs ? 'Tierra (Comida)' : 'Earth (Food)'}</h4>
+              <p>
+                {isEs
+                  ? 'Pan de muerto, frutas y platillos caseros para celebrar la alegría de la vida.'
+                  : 'Sweet bread (Pan de Muerto) and fruit to celebrate the sweetness of life together.'}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Why Open Innovation Embodies this Spirit */}
+        {/* Simple Privacy Note */}
         <div className="guide-section open-ai-tribute">
           <div className="open-ai-tribute-header">
             <Shield size={20} className="tribute-shield" />
-            <h3>Por qué la Innovación Abierta Honra la Memoria</h3>
+            <h3>{isEs ? '100% Privado en tu Computadora' : '100% Private on Your Device'}</h3>
           </div>
           <p>
-            En nuestra tradición, el "fantasma" no es algo temible, sino un recuerdo amado que se niega a desaparecer.
-            Al fundamentar Ofrenda Viva en modelos y formatos abiertos, aseguramos que la memoria de nuestros antepasados
-            nos pertenezca plenamente:
+            {isEs
+              ? 'Tus fotos familiares, nombres e historias se guardan únicamente en tu navegador. Nadie más puede verlas ni utilizarlas.'
+              : 'Your family photos, names, and memories stay right here in your browser. Nothing is sent to public corporate servers or trackers.'}
           </p>
-
-          <ul className="open-ai-tribute-list">
-            <li>
-              <strong>Soberanía y Privacidad del Duelo:</strong> Las historias íntimas y retratos familiares nunca deben alimentar modelos comerciales de publicidad corporativa.
-            </li>
-            <li>
-              <strong>Longevidad Fuera de Línea:</strong> Una ofrenda funciona a la luz de las velas cuando una tormenta apaga el internet. El software y los datos locales permanecen accesibles durante décadas.
-            </li>
-            <li>
-              <strong>Preservación Cultural Auténtica:</strong> La rima y las tradiciones orales pertenecen a las familias y a los pueblos, no a algoritmos cerrados.
-            </li>
-          </ul>
         </div>
 
         <div className="guide-footer">
-          <button type="button" className="btn-primary-altar" onClick={onClose}>
-            Entendido con Gratitud
+          <button type="button" className="btn-dash-primary" onClick={onClose}>
+            {isEs ? 'Entendido' : 'Got It, Thanks!'}
           </button>
         </div>
       </div>

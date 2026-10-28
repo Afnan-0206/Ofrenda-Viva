@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, Sparkles } from 'lucide-react';
 import AltarArtwork from './AltarArtwork';
 
-/**
- * AddOfferingModal — Place a custom offering or favorite artifact on the altar.
- */
-export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
+export default function AddOfferingModal({ isOpen, onClose, onAddOffering, lang = 'en' }) {
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
@@ -17,20 +14,22 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
 
   if (!isOpen) return null;
 
+  const isEs = lang === 'es';
+
   const [name, setName] = useState('');
   const [artType, setArtType] = useState('pan');
   const [meaning, setMeaning] = useState('');
   const [tier, setTier] = useState(1);
 
   const presetOfferings = [
-    { type: 'pan', label: 'Pan de Muerto' },
-    { type: 'calavera', label: 'Calavera de Azúcar' },
-    { type: 'cempasuchil', label: 'Cempasúchil' },
-    { type: 'chocolate', label: 'Chocolate / Café' },
-    { type: 'copal', label: 'Copal & Sahumador' },
-    { type: 'agua', label: 'Vaso de Agua' },
-    { type: 'sal', label: 'Plato de Sal' },
-    { type: 'guitarra', label: 'Guitarra & Música' }
+    { type: 'pan', label: isEs ? 'Pan de Muerto' : 'Sweet Bread' },
+    { type: 'calavera', label: isEs ? 'Calavera de Azúcar' : 'Sugar Skull' },
+    { type: 'cempasuchil', label: isEs ? 'Flor de Cempasúchil' : 'Yellow Marigold' },
+    { type: 'chocolate', label: isEs ? 'Chocolate Caliente' : 'Hot Chocolate' },
+    { type: 'copal', label: isEs ? 'Incienso Copal' : 'Sweet Incense' },
+    { type: 'agua', label: isEs ? 'Vaso de Agua' : 'Glass of Water' },
+    { type: 'sal', label: isEs ? 'Plato de Sal' : 'Bowl of Salt' },
+    { type: 'guitarra', label: isEs ? 'Guitarra & Música' : 'Acoustic Guitar' }
   ];
 
   const handleSubmit = (e) => {
@@ -41,7 +40,7 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
       id: `offering-${Date.now()}`,
       name: name.trim(),
       icon: '🌼',
-      meaning: meaning.trim() || 'Ofrenda colocada con devoción, respeto y cariño en este altar.',
+      meaning: meaning.trim() || (isEs ? 'Ofrenda colocada con cariño en este altar.' : 'Placed with love and care on this family altar.'),
       tier: Number(tier)
     });
 
@@ -60,7 +59,7 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar diálogo"
+          aria-label={isEs ? 'Cerrar' : 'Close'}
         >
           <X size={20} />
         </button>
@@ -69,20 +68,24 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           <div className="add-offering-art-preview">
             <AltarArtwork name={artType} size={68} />
           </div>
-          <h2>Colocar Ofrenda en el Altar</h2>
+          <h2>{isEs ? 'Colocar Comida u Ofrenda' : 'Add Food or Gift to the Altar'}</h2>
           <p className="add-subtitle">
-            Ofrece a tus seres queridos sus platillos predilectos, bebidas o elementos sagrados.
+            {isEs
+              ? 'Ofrece a tus seres queridos sus platillos, bebidas o dulces preferidos.'
+              : 'Leave their favorite food, drink, or a special gift on the altar.'}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="add-offering-form">
           <div className="form-group">
-            <label htmlFor="offering-name">Nombre de la Ofrenda o Platillo</label>
+            <label htmlFor="offering-name">
+              {isEs ? 'Nombre del platillo o regalo *' : 'Name of Food, Drink, or Gift *'}
+            </label>
             <input
               id="offering-name"
               type="text"
               required
-              placeholder="Ej. Tamales de rajas, Café de olla con canela, Dulce de calabaza..."
+              placeholder={isEs ? 'Ej. Tamales, café con canela, chocolate...' : 'e.g. Grandma’s Apple Pie, Hot Cocoa, Sweet Bread...'}
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-text"
@@ -90,7 +93,7 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           </div>
 
           <div className="form-group">
-            <label>Tipo de Arte Tradicional</label>
+            <label>{isEs ? 'Elige una ilustración' : 'Choose an Item'}</label>
             <div className="art-selector-grid">
               {presetOfferings.map((p, idx) => (
                 <button
@@ -108,11 +111,17 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="offering-meaning">Significado o Memoria Especial</label>
+            <label htmlFor="offering-meaning">
+              {isEs ? '¿Por qué es especial este platillo o regalo?' : 'Why is this special to them? (Optional)'}
+            </label>
             <textarea
               id="offering-meaning"
               rows={3}
-              placeholder="¿Por qué es especial esta ofrenda para tu ser querido? (Ej. 'Le encantaba prepararlo los domingos para toda la familia...')"
+              placeholder={
+                isEs
+                  ? 'Ej. Le encantaba prepararlo los domingos para toda la familia...'
+                  : 'e.g. They loved baking this on Sunday mornings for the whole family...'
+              }
               value={meaning}
               onChange={(e) => setMeaning(e.target.value)}
               className="input-textarea"
@@ -120,25 +129,31 @@ export default function AddOfferingModal({ isOpen, onClose, onAddOffering }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="offering-tier">Nivel del Altar</label>
+            <label htmlFor="offering-tier">
+              {isEs ? 'Piso en el Altar' : 'Shelf on Altar'}
+            </label>
             <select
               id="offering-tier"
               value={tier}
               onChange={(e) => setTier(e.target.value)}
               className="input-select"
             >
-              <option value={1}>Nivel I: El Inframundo (Purificación y Elementos Vitales)</option>
-              <option value={2}>Nivel II: La Tierra (Memorias Familiares y Platillos Favoritos)</option>
+              <option value={1}>
+                {isEs ? 'Piso Inferior (Agua, pan y elementos tradicionales)' : 'Bottom Shelf (Water, bread & traditional gifts)'}
+              </option>
+              <option value={2}>
+                {isEs ? 'Piso Medio (Platillos y comidas favoritas de la familia)' : 'Middle Shelf (Personal favorite family dishes & treats)'}
+              </option>
             </select>
           </div>
 
           <div className="modal-actions-footer">
-            <button type="button" className="btn-secondary" onClick={onClose}>
-              Cancelar
+            <button type="button" className="btn-dash-secondary" onClick={onClose}>
+              {isEs ? 'Cancelar' : 'Cancel'}
             </button>
-            <button type="submit" className="btn-primary-altar">
+            <button type="submit" className="btn-dash-primary">
               <Plus size={16} />
-              <span>Colocar en el Altar</span>
+              <span>{isEs ? '+ Colocar en el Altar' : '+ Put on Altar'}</span>
             </button>
           </div>
         </form>

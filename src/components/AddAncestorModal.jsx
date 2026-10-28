@@ -4,12 +4,7 @@ import { generateRemembrance } from '../utils/aiEngine';
 import { ANCESTOR_PRESETS } from '../utils/initialData';
 import { MiniMarigold } from './CempasuchilDecorations';
 
-/**
- * AddAncestorModal — Place a new beloved person, pet, or luminary onto the altar.
- * Features instant archetype presets, custom photo uploads, and automatic open AI Calaveritas.
- */
-export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
-  // Global Esc key listener
+export default function AddAncestorModal({ isOpen, onClose, onAddAncestor, lang = 'en' }) {
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
@@ -20,6 +15,8 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+  const isEs = lang === 'es';
 
   const [name, setName] = useState('');
   const [years, setYears] = useState('');
@@ -63,26 +60,25 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
     const newAncestor = {
       id: `ancestor-${Date.now()}`,
       name: name.trim(),
-      years: years.trim() || 'Eterno',
-      relationship: relationship.trim() || 'Loved One',
-      story: story.trim() || 'Recordado con amor y respeto en esta ofrenda.',
-      favoriteFoods: favoriteFoods.trim() || 'Pan de muerto y flores',
-      favoriteMusic: favoriteMusic.trim() || 'La música del viento',
+      years: years.trim() || (isEs ? 'Recuerdo Eterno' : 'Always Remembered'),
+      relationship: relationship.trim() || (isEs ? 'Ser Querido' : 'Loved One'),
+      story: story.trim() || (isEs ? 'Recordado con amor en este altar.' : 'Lovingly remembered on this family altar.'),
+      favoriteFoods: favoriteFoods.trim() || (isEs ? 'Comida casera y flores' : 'Favorite homemade treats and flowers'),
+      favoriteMusic: favoriteMusic.trim() || (isEs ? 'Música tradicional' : 'Gentle acoustic music'),
       photo: photoUrl || '/portrait_abuela.jpg',
       tier: Number(tier),
       candleLit: true
     };
 
     try {
-      // Auto-compose inaugural Calaverita with open AI
       const calaveritaRes = await generateRemembrance({
         ancestor: newAncestor,
         type: 'calaverita',
-        language: 'es'
+        language: isEs ? 'es' : 'en'
       });
       newAncestor.calaverita = calaveritaRes.content;
     } catch (err) {
-      console.warn('Could not auto-generate calaverita:', err);
+      console.warn('Could not auto-generate verse:', err);
     }
 
     onAddAncestor(newAncestor);
@@ -97,7 +93,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           type="button"
           className="modal-close-btn"
           onClick={onClose}
-          aria-label="Cerrar diálogo"
+          aria-label={isEs ? 'Cerrar' : 'Close'}
         >
           <X size={20} />
         </button>
@@ -106,9 +102,11 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           <div className="add-header-icon-wrap">
             <MiniMarigold size={36} color="#ff8c00" />
           </div>
-          <h2>Colocar en el Altar de Muertos</h2>
+          <h2>{isEs ? 'Agregar al Altar' : 'Add Someone to the Altar'}</h2>
           <p className="add-subtitle">
-            Honra a un ser querido, familiar, fiel mascota o guía espiritual.
+            {isEs
+              ? 'Honra a un familiar, amigo, fiel mascota o guía especial con una foto y recuerdos.'
+              : 'Honor a family member, friend, beloved pet, or guide with a photo and memories.'}
           </p>
         </div>
 
@@ -116,7 +114,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
         <div className="quick-presets-box">
           <div className="presets-box-title">
             <Wand2 size={14} className="wand-icon" />
-            <span>Quick Presets (Click to autofill archetype):</span>
+            <span>{isEs ? 'Ejemplos rápidos (Haz clic para rellenar):' : 'Quick Examples (Click to autofill):'}</span>
           </div>
           <div className="preset-buttons-row">
             {ANCESTOR_PRESETS.map((p, idx) => (
@@ -136,19 +134,19 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           {/* Row 1: Name and Years */}
           <div className="form-row">
             <div className="form-group flex-2">
-              <label htmlFor="name-input">Name / Nombre *</label>
+              <label htmlFor="name-input">{isEs ? 'Nombre *' : 'Name *'}</label>
               <input
                 id="name-input"
                 type="text"
                 required
-                placeholder="e.g. Abuelito Manuel, Luna, Frida..."
+                placeholder={isEs ? 'Ej. Abuela Elena, Carlos, Canelo...' : 'e.g. Grandma Rose, Uncle John, Buddy...'}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
             <div className="form-group flex-1">
-              <label htmlFor="years-input">Years / Años</label>
+              <label htmlFor="years-input">{isEs ? 'Años de vida' : 'Years Lived'}</label>
               <input
                 id="years-input"
                 type="text"
@@ -159,39 +157,43 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
             </div>
           </div>
 
-          {/* Row 2: Relationship and Tier */}
+          {/* Row 2: Relationship and Shelf */}
           <div className="form-row">
             <div className="form-group flex-2">
-              <label htmlFor="relation-input">Relationship / Parentesco</label>
+              <label htmlFor="relation-input">{isEs ? 'Parentesco o Relación' : 'Relationship'}</label>
               <input
                 id="relation-input"
                 type="text"
-                placeholder="e.g. Beloved Grandfather, Faithful Pet, Sister..."
+                placeholder={isEs ? 'Ej. Abuela querida, Mejor amigo, Perrito fiel...' : 'e.g. Grandmother, Best Friend, Golden Retriever...'}
                 value={relationship}
                 onChange={(e) => setRelationship(e.target.value)}
               />
             </div>
 
             <div className="form-group flex-1">
-              <label htmlFor="tier-select">Altar Tier / Nivel</label>
+              <label htmlFor="tier-select">{isEs ? 'Piso en el Altar' : 'Shelf on Altar'}</label>
               <select
                 id="tier-select"
                 value={tier}
                 onChange={(e) => setTier(e.target.value)}
               >
-                <option value={2}>Nivel II — La Tierra (Family, Pets & Friends)</option>
-                <option value={3}>Nivel III — El Cielo (Guiding Souls & Mentors)</option>
+                <option value={2}>
+                  {isEs ? 'Piso Medio — Familia, Amigos y Mascotas' : 'Middle Shelf — Family, Friends & Pets'}
+                </option>
+                <option value={3}>
+                  {isEs ? 'Piso Superior — Guías y Maestros' : 'Top Shelf — Role Models & Guides'}
+                </option>
               </select>
             </div>
           </div>
 
           {/* Row 3: Portrait Upload or URL */}
           <div className="form-group">
-            <label>Portrait / Fotografía</label>
+            <label>{isEs ? 'Fotografía' : 'Photo'}</label>
             <div className="photo-picker-row">
               <label className="file-upload-btn">
                 <Upload size={16} />
-                <span>Upload Photo</span>
+                <span>{isEs ? 'Subir Foto' : 'Upload Photo'}</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -202,7 +204,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
 
               <input
                 type="url"
-                placeholder="Or paste an image URL..."
+                placeholder={isEs ? 'O pega el enlace de una imagen...' : 'Or paste a photo link (URL)...'}
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
                 className="photo-url-input"
@@ -211,7 +213,7 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
 
             {photoUrl && (
               <div className="photo-preview-strip">
-                <span>Selected Photo:</span>
+                <span>{isEs ? 'Foto elegida:' : 'Selected Photo:'}</span>
                 <img src={photoUrl} alt="Preview" className="preview-mini-thumb" />
               </div>
             )}
@@ -219,11 +221,17 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
 
           {/* Row 4: Bio / Memories */}
           <div className="form-group">
-            <label htmlFor="story-input">Memory & Life Story / Crónica de Vida</label>
+            <label htmlFor="story-input">
+              {isEs ? 'Historia o recuerdo especial' : 'Short Story or Memory'}
+            </label>
             <textarea
               id="story-input"
               rows={3}
-              placeholder="What made them unforgettable? Their wisdom, laughter, or favorite saying..."
+              placeholder={
+                isEs
+                  ? '¿Qué los hacía inolvidables? Su calidez, su risa o su frase favorita...'
+                  : 'What made them special? Their kindness, favorite jokes, or words of wisdom...'
+              }
               value={story}
               onChange={(e) => setStory(e.target.value)}
             ></textarea>
@@ -232,22 +240,26 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           {/* Row 5: Favorites (Foods & Songs) */}
           <div className="form-row">
             <div className="form-group flex-1">
-              <label htmlFor="foods-input">Favorite Foods / Comida Favorita</label>
+              <label htmlFor="foods-input">
+                {isEs ? 'Comidas o dulces favoritos' : 'Favorite Foods or Treats'}
+              </label>
               <input
                 id="foods-input"
                 type="text"
-                placeholder="e.g. Tamales, mole, pan dulce, café..."
+                placeholder={isEs ? 'Ej. Tamales, café de olla, pan dulce...' : 'e.g. Apple pie, hot chocolate, roast chicken...'}
                 value={favoriteFoods}
                 onChange={(e) => setFavoriteFoods(e.target.value)}
               />
             </div>
 
             <div className="form-group flex-1">
-              <label htmlFor="music-input">Favorite Songs / Música Preferida</label>
+              <label htmlFor="music-input">
+                {isEs ? 'Música o canciones favoritas' : 'Favorite Songs or Music'}
+              </label>
               <input
                 id="music-input"
                 type="text"
-                placeholder="e.g. Cielito Lindo, classical guitar..."
+                placeholder={isEs ? 'Ej. Cielito Lindo, guitarra española...' : 'e.g. Classic acoustic guitar, jazz, folk...'}
                 value={favoriteMusic}
                 onChange={(e) => setFavoriteMusic(e.target.value)}
               />
@@ -258,19 +270,23 @@ export default function AddAncestorModal({ isOpen, onClose, onAddAncestor }) {
           <div className="add-modal-actions">
             <button
               type="button"
-              className="btn-secondary"
+              className="btn-dash-secondary"
               onClick={onClose}
             >
-              Cancel
+              {isEs ? 'Cancelar' : 'Cancel'}
             </button>
 
             <button
               type="submit"
-              className="btn-primary-altar"
+              className="btn-dash-primary"
               disabled={isGenerating}
             >
               <Sparkles size={16} />
-              <span>{isGenerating ? 'Weaving Calaverita...' : 'Place Upon the Altar'}</span>
+              <span>
+                {isGenerating
+                  ? (isEs ? 'Preparando recuerdo...' : 'Adding to altar...')
+                  : (isEs ? '+ Colocar en el Altar' : '+ Put on Altar')}
+              </span>
             </button>
           </div>
         </form>
